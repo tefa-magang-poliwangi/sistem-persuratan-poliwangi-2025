@@ -30,7 +30,7 @@
 					</div>
 					<div class="info">
 						{{-- <a href="#" class="d-block">{{ (Auth::user())?Auth::user()->name:"" }}</a> --}}
-						
+
 					</div>
 				</div>
                 @each('adminlte::partials.sidebar.menu-item', $adminlte->menu('sidebar'), 'item')

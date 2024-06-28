@@ -21,8 +21,8 @@ if(!function_exists('BCL_renderSelectIcon')){
     function BCL_renderSelectIcon($icon)
     {
         $icons = BCL_getIconName();
-        $html = '<select name="icon" id="tt" class="form-control  col-sm-8" data-show-content="true">';           
-        
+        $html = '<select name="icon" id="tt" class="form-control  col-sm-8" data-show-content="true">';
+
         foreach ( $icons as $i){
             $selected='';
             if($i==$icon)$selected='selected';
@@ -64,7 +64,7 @@ if(!function_exists('BCL_menuSidebar')){
             $addMenu="";
             foreach ($result as $row) {
                 $key=str_replace(' ','_',strtolower($row->label));
-                $active=BCL_ArrToString(unserialize($row->active));                
+                $active=BCL_ArrToString(unserialize($row->active));
                 if($active!="")$active='"active" => '.$active.',';
                 $bisa=BCL_ArrToString(unserialize($row->can));
                 if($bisa!="")$bisa='"can" => '.$bisa.',';
@@ -79,7 +79,7 @@ if(!function_exists('BCL_menuSidebar')){
                 $squery=Menu::where('parent_id',$row->id);
                 if($squery->count()>0){
                     $sresult=$squery->orderBy('urut','ASC')
-                        ->get();                    
+                        ->get();
                     foreach ($sresult as $srow) {
                         $active=BCL_ArrToString(unserialize($srow->active));
                         if($active!="")$active='"active" => '.$active.',';
@@ -94,11 +94,11 @@ if(!function_exists('BCL_menuSidebar')){
                             '.$active.'
                             '.$bisa.'
                         ]);';
-                        
+
                     }
                 }
-                $key_parent=$key;
-            }            
+                //$key_parent=$key;
+            }
             eval($addMenu);
         }
     }

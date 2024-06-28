@@ -1,3 +1,8 @@
+<?php
+    /*echo "<pre>";
+    print_r($item);
+echo "</pre>";*/
+    ?>
 <li @isset($item['id']) id="{{ $item['id'] }}" @endisset class="nav-item has-treeview {{ $item['submenu_class'] }}">
 
     {{-- Menu toggler --}}

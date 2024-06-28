@@ -19,10 +19,10 @@ class UsersController extends Controller
 {
     /**
      * Display all users
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
-    public function index() 
+    public function index()
     {
         $users = User::latest()->paginate(50);
 
@@ -31,23 +31,23 @@ class UsersController extends Controller
 
     /**
      * Show form for creating user
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
-    public function create() 
+    public function create()
     {
         return view('users.create');
     }
 
     /**
      * Store a newly created user
-     * 
+     *
      * @param User $user
      * @param StoreUserRequest $request
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
-    public function store(User $user, StoreUserRequest $request) 
+    public function store(User $user, StoreUserRequest $request)
     {
         //For demo purposes only. When creating user or inviting a user
         // you should create a generated random password and email it to the user
@@ -57,7 +57,7 @@ class UsersController extends Controller
 			'staff'	=> 0,
 			'status'	=> 2,
         ]));
-		
+
 		$usr->syncRoles(2);
 
         return redirect()->route('users.index')
@@ -66,12 +66,12 @@ class UsersController extends Controller
 
     /**
      * Show user data
-     * 
+     *
      * @param User $user
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user) 
+    public function show(User $user)
     {
         return view('users.show', [
             'user' => $user
@@ -80,12 +80,12 @@ class UsersController extends Controller
 
     /**
      * Edit user data
-     * 
+     *
      * @param User $user
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user) 
+    public function edit(User $user)
     {
         return view('users.edit', [
             'user' => $user,
@@ -96,11 +96,11 @@ class UsersController extends Controller
 
     /**
      * Edit user profile data
-     * 
-     * 
+     *
+     *
      * @return \Illuminate\Http\Response
      */
-    public function editProfile() 
+    public function editProfile()
     {
         $user=Auth::user();
         return view('users.editprofile', [
@@ -110,13 +110,13 @@ class UsersController extends Controller
 
     /**
      * Update profile user data
-     * 
+     *
      * @param User $user
      * @param UpdateProfileRequest $request
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
-    public function updateProfile(User $user, UpdateProfileRequest $request) 
+    public function updateProfile(User $user, UpdateProfileRequest $request)
     {
         $validator=$request->validated();
         if($validator){
@@ -148,27 +148,36 @@ class UsersController extends Controller
 
     /**
      * Update user data
-     * 
+     *
      * @param User $user
      * @param UpdateUserRequest $request
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
-    public function update(User $user, UpdateUserRequest $request) 
+    public function update(User $user, UpdateUserRequest $request)
     {
         $user->update($request->validated());
-
-        $user->syncRoles($request->get('role'));
+        $roles=[];
+        foreach ($request->get('role') as $role) {
+            $role = Role::find($role);
+            $roles[]= $role['name'];
+        }
+        $user->syncRoles($roles);
+        //$user->syncRoles($request->get('role'));
+        /*echo "<pre>";
+        print_r($roles);
+        echo "</pre>";*/
 
         return redirect()->route('users.index')
             ->withSuccess(__('User updated successfully.'));
+
     }
-	
+
 	public function tukaruser(User $user){
 		$users  =   User::where(['id' => $user->id])->first();
         if($users){
-			\Illuminate\Support\Facades\Session::flush();        
-			\Auth::logout();		
+			\Illuminate\Support\Facades\Session::flush();
+			\Auth::logout();
 			\Auth::login($user,true);
 			return redirect()->route('home.index')->with('success_message', 'Sukses beralih user');
 		}
@@ -177,12 +186,12 @@ class UsersController extends Controller
 
     /**
      * Delete user data
-     * 
+     *
      * @param User $user
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user) 
+    public function destroy(User $user)
     {
         $user->delete();
 

@@ -25,10 +25,10 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-		
+
 		if (Schema::hasTable('roles')) {
 			$roles = \Spatie\Permission\Models\Role::where('guard_name','web')->get();
-			//dd($role);
+			//dd($roles);
 			foreach($roles as $r){
 				Gate::define($r->name, function ($user) use ($r) {
 					$roles = $user->roles->pluck('name')->toArray();
@@ -50,7 +50,7 @@ class AuthServiceProvider extends ServiceProvider
 			}
 			return false;
        });
-	   
+
 	   Gate::define('terdaftar', function ($user) {
            $roles = $user->roles->pluck('name')->toArray();
 			$role = $user->role_aktif;
@@ -60,7 +60,7 @@ class AuthServiceProvider extends ServiceProvider
 			}
 			return false;
        });
-	   
+
 	   Gate::define('pengusul', function ($user) {
            $roles = $user->roles->pluck('name')->toArray();
 			$role = $user->role_aktif;
@@ -70,7 +70,7 @@ class AuthServiceProvider extends ServiceProvider
 			}
 			return false;
        });
-	   
+
 	   Gate::define('operator', function ($user) {
            $roles = $user->roles->pluck('name')->toArray();
 			$role = $user->role_aktif;
@@ -80,7 +80,7 @@ class AuthServiceProvider extends ServiceProvider
 			}
 			return false;
        });
-	   
+
 	   Gate::define('p3m', function ($user) {
            $roles = $user->roles->pluck('name')->toArray();
 			$role = $user->role_aktif;
@@ -90,7 +90,7 @@ class AuthServiceProvider extends ServiceProvider
 			}
 			return false;
        });
-	   
+
 	   Gate::define('direktur', function ($user) {
            $roles = $user->roles->pluck('name')->toArray();
 			$role = $user->role_aktif;
@@ -100,7 +100,7 @@ class AuthServiceProvider extends ServiceProvider
 			}
 			return false;
        });
-	   
+
 	   Gate::define('kaprodi', function ($user) {
            $roles = $user->roles->pluck('name')->toArray();
 			$role = $user->role_aktif;
@@ -110,7 +110,7 @@ class AuthServiceProvider extends ServiceProvider
 			}
 			return false;
        });*/
-	   
+
         //
     }
 }

@@ -71,6 +71,19 @@
         <meta name="msapplication-TileImage" content="{{ asset('favicon/ms-icon-144x144.png') }}">
     @endif
 
+    <!-- Icons -->
+    <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+    <!-- Small Ionicons Fixes for AdminLTE -->
+    <style>
+        html {
+            background-color: #f4f6f9;
+        }
+
+        .nav-icon.icon:before {
+            width: 25px;
+        }
+    </style>
 </head>
 
 <body class="@yield('classes_body')" @yield('body_data')>

@@ -1,0 +1,13 @@
+{
+    "name": "Kinerja",
+    "alias": "kinerja",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Kinerja\\Providers\\KinerjaServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
