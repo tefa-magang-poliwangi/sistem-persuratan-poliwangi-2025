@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'Show Surat Masuk')
+@section('title', 'Edit')
 @section('plugins.Select2', true)
 @section('content_header')
     <h1 class="m-0 text-dark"></h1>
@@ -16,25 +16,27 @@
                     @csrf
                     @method('patch')
                     <div class="row mb-3">
-                        <div class="col-md-12">
-                            <label for="example-text-input">Tujuan Disposisi</label>
-                            <select name="tujuan_disposisi" class="form-control">
-                                {{-- <option value="" selected disabled>--Pilih--</option> --}}
-                                @foreach ($user as $item)
-                                    <option value="{{ $item->name }}"{{$item->name == $surat->tujuan_disposisi ? 'selected' : '' }}>{{ $item->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="example-text-input" class="col-form-label">Induk</label>
-                            <input class="form-control" type="text" name="induk" value="{{$surat->induk}}">
+                            <label for="example-text-input" class="col-form-label">Tujuan Disposisi</label>
+                            <select name="tujuan_disposisi" class="form-control">
+                                <option value="" selected disabled>--Pilih--</option>
+                                @foreach ($user as $item)
+                                    <option value="{{ $item->jabatan }}"{{$item->jabatan == $surat->tujuan_disposisi ? 'selected' : '' }}>{{ $item->jabatan }}</option>
+                                @endforeach
+                                <option value="Sekretaris" {{"Sekretaris" == $surat->tujuan_disposisi ? 'selected' : '' }}>Kembali Ke Sekretaris</option>
+                            </select>
                         </div>
                         <div class="col-md-6">
                             <label for="example-text-input" class="col-form-label">Waktu</label>
                             <input class="form-control" type="datetime-local" name="waktu" value="{{$surat->waktu}}">
                         </div>
+                    </div>
+                    <div class="row mb-3" hidden>
+                        <div class="col-md-6" >
+                            <label for="example-text-input" class="col-form-label">Induk</label>
+                            <input class="form-control" type="text" name="induk" value="{{$surat->induk}}">
+                        </div>
+                        
                     </div>
                     <div class="mb-3">
                         <label for="">Disposisi Singkat</label>
@@ -44,10 +46,6 @@
                         <label for="">Disposisi Narasi</label>
                         <textarea type="" name="disposisi_narasi" id="" class="form-control">{{$surat->disposisi_narasi}}</textarea>
                     </div>
-                    {{-- <div class="mb-3">
-                            <label for="">Lampiran</label>
-                            <input type="file" name="lampiran_tindak_lanjut" id="" class="form-control">
-                        </div> --}}
                     <button type="submit" class="btn btn-primary">Simpan</button>
                 </form>
             </div>
@@ -61,7 +59,5 @@
             //Initialize Select2 Elements
             $('.select2').select2();
          });
-        
-        
     </script>
 @endpush

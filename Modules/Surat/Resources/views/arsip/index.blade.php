@@ -1,6 +1,6 @@
 {{-- @extends('surat::layouts.master') --}}
 @extends('adminlte::page')
-@section('title', 'Surat')
+@section('title', 'Arsip Surat')
 @section('content_header')
     <h1 class="m-0 text-dark"></h1>
 @stop
@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                <div class="card-header">Informasi Surat</div>
+                <div class="card-header">Data Arsip Surat</div>
                 <div class="card-body">
 
                     <div class="table-responsive table-striped">

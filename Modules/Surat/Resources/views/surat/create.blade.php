@@ -12,44 +12,43 @@
                 <div class="card-body">
                     
                     <a href="{{ url( (Request::server('HTTP_REFERER')==null?'/surat/surat-masuk':Request::server('HTTP_REFERER')) ) }}" title="Kembali"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Kembali</button></a>
-                    <br><br>
+                    <br>
                     <form action="{{ url('surat/surat-masuk') }}" method="post" enctype="multipart/form-data">
                         @csrf
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <label for="example-text-input" class="col-form-label">Nomor Surat</label>
-                                <input class="form-control" type="text" name="nomor">
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <label for="example-text-input" class="col-form-label">Nomor Surat <span class="text-danger fw-bold">*</span></label>
+                                <input class="form-control" type="text" name="nomor" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="example-text-input" class="col-form-label">Tanggal Surat <span class="text-danger fw-bold">*</span></label>
+                                <input class="form-control" type="date" name="tanggal_surat" required>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-2">
                             <div class="col-md-6">
-                                <label for="example-text-input" class="col-form-label">Tanggal Surat</label>
-                                <input class="form-control" type="date" name="tanggal_surat">
+                                <label for="example-text-input" class="col-form-label">Perihal <span class="text-danger fw-bold">*</span></label>
+                                <input class="form-control" type="text" name="perihal" required>
                             </div>
                             <div class="col-md-6">
-                                <label for="example-text-input" class="col-form-label">Tanggal Diterima</label>
-                                <input class="form-control" type="datetime-local" name="tanggal_diterima">
-                            </div>
-
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="example-text-input" class="col-form-label">Pengirim</label>
-                                <input class="form-control" type="text" name="pengirim">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="example-text-input" class="col-form-label">Diterima dari</label>
-                                <input class="form-control" type="text" name="diterima_dari">
+                                <label for="example-text-input" class="col-form-label">Pengirim <span class="text-danger fw-bold">*</span></label>
+                                <input class="form-control" type="text" name="pengirim" required>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="">Perihal</label>
-                            <textarea type="" name="perihal" id="" class="form-control"></textarea>
-                        </div>
-                        <div class="row mb-3">
+                        <div class="row mb-2">
                             <div class="col-md-6">
-                                <label for="">Sifat</label>
-                                <select name="sifat" class="form-control" id="">
+                                <label for="example-text-input" class="col-form-label">Diterima dari <span class="text-danger fw-bold">*</span></label>
+                                <input class="form-control" type="text" name="diterima_dari" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="example-text-input" class="col-form-label">Tanggal Diterima <span class="text-danger fw-bold">*</span></label>
+                                <input class="form-control" type="datetime-local" name="tanggal_diterima" required>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <label for="">Sifat <span class="text-danger fw-bold">*</span></label>
+                                <select name="sifat" class="form-control" id="" required>
                                     <option value="" selected disabled>--Pilih--</option>
                                     <option value="biasa">Biasa</option>
                                     <option value="segera">segera</option>
@@ -59,23 +58,23 @@
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <label for="example-text-input">Pilih Tindakan</label>
-                                <select id="status_surat" name="status" class="form-control">
+                                <label for="example-text-input">Pilih Tindakan <span class="text-danger fw-bold">*</span></label>
+                                <select id="status_surat" name="status" class="form-control" required>
                                     <option value="" selected disabled>--Pilih--</option>
                                     <option value="5">Arsipkan</option>
                                     <option value="2">Ajukan Ke Pimpinan</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-2">
                             <label for="">Catatan Sekretariat</label>
                             <textarea type="" name="catatan_sekretariat" id="" class="form-control"></textarea>
                         </div>
-                        <div class="col-md-6">
-                            <label for="example-text-input" class="col-form-label">File</label>
-                            <input class="form-control" type="file" name="file">
+                        <div class="col-md-12">
+                            <label for="example-text-input" class="col-form-label">File <span class="text-danger fw-bold">*</span></label>
+                            <input class="form-control" type="file" name="file" required>
                         </div>
-                        {{-- <div class="row mb-3">
+                        {{-- <div class="row mb-2">
                             <div class="col-md-6">
                                 <label for="example-text-input" class="col-form-label">Surat</label>
                                 <input class="form-control" type="file" name="foto_surat">
@@ -85,7 +84,7 @@
                                 <input class="form-control" type="file" name="foto_disposisi">
                             </div>
                         </div> --}}
-                        {{-- <div class="mb-3" id="tujuan" hidden>
+                        {{-- <div class="mb-2" id="tujuan" hidden>
                             <label for="">Tujuan Disposisi</label>
                             <select name="tujuan_disposisi" class="form-control" id="">
                                 <option value="" selected disabled>--Pilih--</option>
@@ -94,7 +93,7 @@
                                 <option value="Wadir II">Wakil Direktur II</option>
                             </select>
                         </div> --}}
-                        <div class="row mb-3 mt-3">
+                        <div class="row mb-2 mt-3">
                             <div class="col-md-8 d-flex">
                                 <div class="col-md-2">
                                     <button type="submit" class="btn btn-primary">Simpan</button>

@@ -61,7 +61,7 @@ class OAuthController extends Controller
     //digunakan untuk transfer data user ke client
 
     protected function authAfterSso($response){
-        //dd($response);
+        // dd($response);
         if (!isset($response['access_token'])) {
             return redirect('/');
         }
@@ -81,6 +81,18 @@ class OAuthController extends Controller
 
 		
         $users  =   User::where(['username' => $SSOUser['username']])->first();
+
+        // cek staff dan unit
+        $staff = \DB::table('staffs')->where('id',$users->staff)->select('nama')->first();
+        $unit = \DB::table('units')->where('id',$users->unit)->select('nama')->first();
+        $jabatan = \DB::table('users')
+            ->join('pegawai', 'users.id', '=', 'pegawai.user_id')
+            ->join('pejabats', 'pegawai.id', '=', 'pejabats.pegawai_id')
+            ->where('users.id', $users->id)
+            ->select('pejabats.jabatan')
+            ->first();
+        dd($unit);
+        
         if($users){
 			Auth::login($users,true);
 			Session::flush();        

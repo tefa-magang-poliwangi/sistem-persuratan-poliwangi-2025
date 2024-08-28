@@ -15,7 +15,6 @@ class CreateSuratMasuksTable extends Migration
     {
         Schema::create('surat_masuks', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('induk');
             $table->char('nomor', 100);
             $table->date('tanggal_surat');
             $table->dateTime('tanggal_diterima');
@@ -31,7 +30,8 @@ class CreateSuratMasuksTable extends Migration
                     'Rahasia',
                 ])
                 ->default('Biasa');
-            $table->unsignedBigInteger('user_id');
+            $table->string('disposisi')->nullable();
+            $table->integer('status')->nullable();
             $table->char('catatan_sekretariat', 200)->nullable();
             $table->char('file', 200)->nullable();
 

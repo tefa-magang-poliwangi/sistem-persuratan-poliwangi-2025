@@ -16,24 +16,26 @@
                     @csrf
                     @method('patch')
                     <div class="row mb-3">
-                        <div class="col-md-12">
-                            <label for="example-text-input">Tujuan Disposisi</label>
+                        <div class="col-md-6">
+                            <label for="example-text-input" class="col-form-label">Tujuan Disposisi</label>
                             <select name="tujuan_disposisi[]" class="form-control select2" multiple="multiple">
+                                <option value="Sekretaris" {{"Sekretaris" == $surat->tujuan_disposisi ? 'selected' : '' }}>Kembali ke Sekretaris</option>
                                 @foreach ($user as $item)
-                                    <option value="{{ $item->name }}"{{ in_array($item->name, explode(',', $surat->tujuan_disposisi)) ? 'selected' : '' }}>{{ $item->name }}</option>
+                                    <option value="{{ $item->jabatan }}"{{ in_array($item->jabatan, explode(',', $surat->tujuan_disposisi)) ? 'selected' : '' }}>{{ $item->jabatan }}</option>
                                 @endforeach
                             </select>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="example-text-input" class="col-form-label">Induk</label>
-                            <input class="form-control" type="text" name="induk" value="{{$surat->induk}}">
                         </div>
                         <div class="col-md-6">
                             <label for="example-text-input" class="col-form-label">Waktu</label>
                             <input class="form-control" type="datetime-local" name="waktu" value="{{$surat->waktu}}">
                         </div>
+                    </div>
+                    <div class="row mb-3" hidden>
+                        <div class="col-md-6">
+                            <label for="example-text-input" class="col-form-label">Induk</label>
+                            <input class="form-control" type="text" name="induk" value="{{$surat->induk}}">
+                        </div>
+                        
                     </div>
                     <div class="mb-3">
                         <label for="">Disposisi Singkat</label>
