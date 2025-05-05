@@ -28,18 +28,11 @@ class WadirController extends Controller
             ->first();
         $surat = DB::table('surat_disposisis')
             ->join('surat_masuks', 'surat_disposisis.surat_masuk_id', '=', 'surat_masuks.id')
-            ->whereRaw('FIND_IN_SET(?, surat_disposisis.tujuan_disposisi)', $jabatan)
+            ->whereRaw('FIND_IN_SET(?, surat_disposisis.tujuan_disposisi)', [$jabatan->jabatan])
             ->whereIn('surat_masuks.status', ['3', '4', '6', '7'])
             ->select('surat_disposisis.*', 'surat_masuks.*')
             ->orderBy('surat_masuks.created_at', 'DESC')
             ->get();
-        // $surat = DB::table('surat_disposisis')
-        //     ->join('surat_masuks', 'surat_disposisis.surat_masuk_id', '=', 'surat_masuks.id')
-        //     ->whereRaw('FIND_IN_SET(?, surat_disposisis.tujuan_disposisi)', auth()->user()->name)
-        //     ->whereIn('surat_masuks.status', ['3', '4', '6', '7'])
-        //     ->select('surat_disposisis.*', 'surat_masuks.*')
-        //     ->orderBy('surat_masuks.created_at', 'DESC')
-        //     ->get();
         return view('surat::wadir.index', compact('surat'));
     }
 
