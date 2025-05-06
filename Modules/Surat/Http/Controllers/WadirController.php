@@ -21,19 +21,29 @@ class WadirController extends Controller
     public function index()
     {
         $jabatan = DB::table('users')
-            ->join('pegawai', 'users.id', '=', 'pegawai.user_id')
-            ->join('pejabats', 'pegawai.id', '=', 'pejabats.pegawai_id')
+            ->join('pegawais', 'users.username', '=', 'pegawais.username')
+            ->join('pejabats', 'pegawais.id', '=', 'pejabats.pegawai_id')
             ->where('users.id', auth()->id())
             ->select('pejabats.jabatan')
             ->first();
-        $surat = DB::table('surat_disposisis')
-            ->join('surat_masuks', 'surat_disposisis.surat_masuk_id', '=', 'surat_masuks.id')
-            ->whereRaw('FIND_IN_SET(?, surat_disposisis.tujuan_disposisi)', [$jabatan->jabatan])
-            ->whereIn('surat_masuks.status', ['3', '4', '6', '7'])
-            ->select('surat_disposisis.*', 'surat_masuks.*')
-            ->orderBy('surat_masuks.created_at', 'DESC')
-            ->get();
-        return view('surat::wadir.index', compact('surat'));
+
+        $surat = null;
+
+        if ($jabatan) {
+            $surat = DB::table('surat_disposisis')
+                ->join('surat_masuks', 'surat_disposisis.surat_masuk_id', '=', 'surat_masuks.id')
+                ->whereRaw('FIND_IN_SET(?, surat_disposisis.tujuan_disposisi)', [$jabatan->jabatan])
+                ->whereIn('surat_masuks.status', ['3', '4', '6', '7'])
+                ->select('surat_disposisis.*', 'surat_masuks.*')
+                ->orderBy('surat_masuks.created_at', 'DESC')
+                ->get();
+        }
+
+        $data = [
+            'surat' => $surat
+        ];
+
+        return view('surat::wadir.index', $data);
     }
 
     /**
@@ -54,13 +64,13 @@ class WadirController extends Controller
     {
         $surat = SuratMasuk::findOrFail($id);
         $user = DB::table('pejabats')
-        ->select('pejabats.jabatan')
-        ->where(function($query) {
-            $query->where('pejabats.jabatan', 'not like', 'Direktur%')
-            ->where('pejabats.jabatan', 'not like', 'Wakil Direktur%');
-        })->get();
+            ->select('pejabats.jabatan')
+            ->where(function ($query) {
+                $query->where('pejabats.jabatan', 'not like', 'Direktur%')
+                    ->where('pejabats.jabatan', 'not like', 'Wakil Direktur%');
+            })->get();
         $user_direktur = User::where('name', 'Direktur')->first();
-        $disposisi = SuratDisposisi::where('surat_masuk_id', $id)->where('user_id', $user_direktur->id)->orderBy('created_at','DESC')->first();
+        $disposisi = SuratDisposisi::where('surat_masuk_id', $id)->where('user_id', $user_direktur->id)->orderBy('created_at', 'DESC')->first();
         return view('surat::wadir.show', compact('surat', 'user', 'disposisi'));
     }
 
@@ -81,11 +91,11 @@ class WadirController extends Controller
     {
         $surat = SuratDisposisi::where('surat_masuk_id', $id)->where('user_id', auth()->user()->id)->first();
         $user = DB::table('pejabats')
-        ->select('pejabats.jabatan')
-        ->where(function($query) {
-            $query->where('pejabats.jabatan', 'not like', 'Direktur%')
-            ->where('pejabats.jabatan', 'not like', 'Wakil Direktur%');
-        })->get();
+            ->select('pejabats.jabatan')
+            ->where(function ($query) {
+                $query->where('pejabats.jabatan', 'not like', 'Direktur%')
+                    ->where('pejabats.jabatan', 'not like', 'Wakil Direktur%');
+            })->get();
         return view('surat::wadir.edit', compact('surat', 'user'));
     }
 
@@ -103,7 +113,7 @@ class WadirController extends Controller
                 'disposisi' => implode(',', $request->disposisi),
                 'status' => 6,
             ];
-        }elseif ($request->disposisi == ['Direktur']) {
+        } elseif ($request->disposisi == ['Direktur']) {
             $data = [
                 'disposisi' => implode(',', $request->disposisi),
                 'status' => 2,
