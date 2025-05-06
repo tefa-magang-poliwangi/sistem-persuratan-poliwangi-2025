@@ -21,7 +21,7 @@ class UserModulSuratTableSeeder extends Seeder
     {
         Model::unguard();
 
-        Artisan::call('permission:create-permission-routes-sync');
+        // Artisan::call('permission:create-permission-routes-sync');
 
         $roleAdmin = Role::updateOrCreate(['name' => 'admin']);
         $rolePimpinan = Role::updateOrCreate(['name' => 'direktur']);
