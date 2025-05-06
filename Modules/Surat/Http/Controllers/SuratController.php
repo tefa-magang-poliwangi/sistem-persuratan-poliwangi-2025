@@ -58,6 +58,12 @@ class SuratController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'pengirim' => 'regex:/^[a-zA-Z\s]+$/',
+            'diterima_dari' => 'regex:/^[a-zA-Z\s]+$/',
+            'perihal' => 'regex:/^[a-zA-Z\s]+$/',
+            'file' => 'required|mimes:pdf|max:5048', // hanya izinkan PDF, maksimal 2MB
+        ]);
         $data = [
             'nomor' => $request->nomor,
             'tanggal_surat' => $request->tanggal_surat,
@@ -137,6 +143,12 @@ class SuratController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'pengirim' => 'regex:/^[a-zA-Z\s]+$/',
+            'diterima_dari' => 'regex:/^[a-zA-Z\s]+$/',
+            'perihal' => 'regex:/^[a-zA-Z\s]+$/',
+            'file' => 'required|mimes:pdf|max:5048', // hanya izinkan PDF, maksimal 2MB
+        ]);
         $Surat_masuk = SuratMasuk::findOrFail($id);
         $data = [
             'nomor' => $request->nomor,

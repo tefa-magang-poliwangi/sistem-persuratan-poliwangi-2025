@@ -225,6 +225,7 @@
             }
         });
     </script>
+    <a href="{{ url( 'surat/surat-masuk' ) }}" title="Kembali"><button class="btn btn-warning btn-sm mb-3"><i class="fa fa-arrow-left" aria-hidden="true"></i> Kembali</button></a>
     <div id="sample">
         <div id="myDiagramDiv" style="background-color: white; width: 100%; height: 550px; position: relative; -webkit-tap-highlight-color: rgba(255, 255, 255, 0); cursor: auto;"><canvas tabindex="0" width="1545" height="672" style="position: absolute; top: 0px; left: 0px; z-index: 2; user-select: none; touch-action: none; width: 1236px; height: 538px; cursor: auto;"></canvas>
             <div style="position: absolute; overflow: auto; width: 1246px; height: 548px; z-index: 1;">

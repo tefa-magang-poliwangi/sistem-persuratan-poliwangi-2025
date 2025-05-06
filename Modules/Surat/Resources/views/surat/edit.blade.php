@@ -10,7 +10,7 @@
             <div class="card">
                 <div class="card-header">Edit Surat</div>
                 <div class="card-body">
-                    <a href="{{ url( (Request::server('HTTP_REFERER')==null?'/surat/surat-masuk':Request::server('HTTP_REFERER')) ) }}" title="Kembali"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Kembali</button></a>
+                <a href="{{ url( 'surat/surat-masuk' ) }}" title="Kembali"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Kembali</button></a>
                     <form action="{{ url('/surat/surat-masuk/' . $suratmasuk->id) }}" method="post" enctype="multipart/form-data">
                         @csrf
                         @method('PATCH')
@@ -61,7 +61,12 @@
                         </div>
                         <div class="col-md-12">
                             <label for="example-text-input" class="col-form-label">File</label>
-                            <input class="form-control" type="file" name="file">
+                            <input class="form-control" type="file" name="file" value="{{ old('file') }}">
+                            @if ($errors->has('file'))
+                                    <div style="width:auto; color:#dc4c64; margin-top:0.25rem;">
+                                        {{ $errors->first('file') }}
+                                    </div>
+                            @endif
                         </div>
                         {{-- <div class="row mb-3">
                             <div class="col-md-6">
