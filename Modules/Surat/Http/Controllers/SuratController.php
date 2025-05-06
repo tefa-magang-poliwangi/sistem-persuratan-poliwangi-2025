@@ -63,6 +63,10 @@ class SuratController extends Controller
             'diterima_dari' => 'regex:/^[a-zA-Z\s]+$/',
             'perihal' => 'regex:/^[a-zA-Z\s]+$/',
             'file' => 'required|mimes:pdf|max:5048', // hanya izinkan PDF, maksimal 2MB
+        ], [
+            'pengirim' => 'Nama Pengirim tidak boleh menggunakan simbol atau angka', 
+            'perihal' => 'Perihal tidak boleh menggunakan simbol atau angka', 
+            'diterima_dari' => 'Nama Penerima tidak boleh menggunakan simbol atau angka', 
         ]);
         $data = [
             'nomor' => $request->nomor,
@@ -147,7 +151,11 @@ class SuratController extends Controller
             'pengirim' => 'regex:/^[a-zA-Z\s]+$/',
             'diterima_dari' => 'regex:/^[a-zA-Z\s]+$/',
             'perihal' => 'regex:/^[a-zA-Z\s]+$/',
-            'file' => 'required|mimes:pdf|max:5048', // hanya izinkan PDF, maksimal 2MB
+            'file' => 'mimes:pdf|max:5048', // hanya izinkan PDF, maksimal 2MB
+        ], [
+            'pengirim' => 'Nama Pengirim tidak boleh menggunakan simbol atau angka', 
+            'perihal' => 'Perihal tidak boleh menggunakan simbol atau angka', 
+            'diterima_dari' => 'Nama Penerima tidak boleh menggunakan simbol atau angka', 
         ]);
         $Surat_masuk = SuratMasuk::findOrFail($id);
         $data = [

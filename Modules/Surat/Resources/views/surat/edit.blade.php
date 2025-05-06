@@ -27,17 +27,32 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="">Perihal</label>
-                                <input type="text" class="form-control" name="perihal" value="{{ $suratmasuk->perihal }}">
+                                <input type="text" class="form-control" name="perihal" value="{{ old('perihal', $suratmasuk->perihal) }}">
+                                @if ($errors->has('perihal'))
+                                <div style="width:auto; color:#dc4c64; margin-top:0.25rem;">
+                                    {{ $errors->first('perihal') }}
+                                </div>
+                            @endif
                             </div>
                             <div class="col-md-6">
                                 <label for="example-text-input" class="col-form-label">Pengirim</label>
-                                <input class="form-control" type="text" name="pengirim" value="{{ $suratmasuk->pengirim }}">
+                                <input class="form-control" type="text" name="pengirim" value="{{ old('pengirim', $suratmasuk->pengirim) }}">
+                                @if ($errors->has('pengirim'))
+                                <div style="width:auto; color:#dc4c64; margin-top:0.25rem;">
+                                    {{ $errors->first('pengirim') }}
+                                </div>
+                            @endif
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="example-text-input" class="col-form-label">Diterima dari</label>
-                                <input class="form-control" type="text" name="diterima_dari" value="{{ $suratmasuk->diterima_dari }}">
+                                <input class="form-control" type="text" name="diterima_dari" value="{{ old('diterima_dari', $suratmasuk->diterima_dari) }}">
+                                @if ($errors->has('diterima_dari'))
+                                <div style="width:auto; color:#dc4c64; margin-top:0.25rem;">
+                                    {{ $errors->first('diterima_dari') }}
+                                </div>
+                            @endif
                             </div>
                             <div class="col-md-6">
                                 <label for="example-text-input" class="col-form-label">Tanggal Diterima</label>
@@ -57,15 +72,28 @@
                         </div>
                         <div class="mb-3">
                             <label for="">Catatan Sekretariat</label>
-                            <textarea type="" name="catatan_sekretariat" id="" class="form-control">{{ $suratmasuk->catatan_sekretariat }}</textarea>
+                            <textarea type="" name="catatan_sekretariat" id="" class="form-control">{{ old('catatan_sekretariat',$suratmasuk->catatan_sekretariat) }}</textarea>
                         </div>
                         <div class="col-md-12">
                             <label for="example-text-input" class="col-form-label">File</label>
-                            <input class="form-control" type="file" name="file" value="{{ old('file') }}">
+                            
+                            {{-- Link file lama jika ada --}}
+                            @if(isset($suratmasuk->file))
+                                <div class="mb-2">
+                                    <a href="{{ asset('storage/assets/img/surat/' . $suratmasuk->file) }}" target="_blank">
+                                        📎 Lihat File Lama
+                                    </a>
+                                </div>
+                            @endif
+
+                            {{-- Input untuk upload file baru (opsional) --}}
+                            <input class="form-control" type="file" name="file">
+                            
+                            {{-- Validasi error --}}
                             @if ($errors->has('file'))
-                                    <div style="width:auto; color:#dc4c64; margin-top:0.25rem;">
-                                        {{ $errors->first('file') }}
-                                    </div>
+                                <div style="width:auto; color:#dc4c64; margin-top:0.25rem;">
+                                    {{ $errors->first('file') }}
+                                </div>
                             @endif
                         </div>
                         {{-- <div class="row mb-3">
