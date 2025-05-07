@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Modules\Surat\Entities\BuktiTugas;
 use Modules\Surat\Entities\SuratMasuk;
 use Modules\Surat\Entities\SuratDisposisi;
@@ -153,42 +154,47 @@ class SuratController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'pengirim' => 'regex:/^[a-zA-Z\s]+$/',
-            'diterima_dari' => 'regex:/^[a-zA-Z\s]+$/',
-            'perihal' => 'regex:/^[a-zA-Z\s]+$/',
-            'file' => 'mimes:pdf|max:5048', // hanya izinkan PDF, maksimal 2MB
-        ], [
-            'pengirim' => 'Nama Pengirim tidak boleh menggunakan simbol atau angka',
-            'perihal' => 'Perihal tidak boleh menggunakan simbol atau angka',
-            'diterima_dari' => 'Nama Penerima tidak boleh menggunakan simbol atau angka',
-        ]);
-        $Surat_masuk = SuratMasuk::findOrFail($id);
-        $data = [
-            'nomor' => $request->nomor,
-            'tanggal_surat' => $request->tanggal_surat,
-            'tanggal_diterima' => $request->tanggal_diterima,
-            'pengirim' => $request->pengirim,
-            'diterima_dari' => $request->diterima_dari,
-            'perihal' => $request->perihal,
-            'sifat' => $request->sifat,
-            'user_id' => auth()->user()->id,
-            'catatan_sekretariat' => $request->catatan_sekretariat,
-        ];
-        if (!empty($request->hasFile('file'))) {
-            $destination = `/storage/app/public/assets/img/surat/$Surat_masuk->file`;
-            if (File::exists($destination)) {
-                File::delete($destination);
-            }
-            $file = $request->file('file');
-            $extension = $file->getClientOriginalExtension();
-            $file_name = Str::random(20) . '.' . $extension;
-            $file->storeAs('/assets/img/surat', $file_name, 'public');
-            $data['file'] = $file_name;
+    $request->validate([
+        'pengirim' => 'required|regex:/^[a-zA-Z\s]+$/',
+        'diterima_dari' => 'required|regex:/^[a-zA-Z\s]+$/',
+        'perihal' => 'required|regex:/^[a-zA-Z\s]+$/',
+        'file' => 'nullable|mimes:pdf|max:2048',
+    ], [
+        'pengirim.regex' => 'Nama Pengirim tidak boleh menggunakan simbol atau angka',
+        'perihal.regex' => 'Perihal tidak boleh menggunakan simbol atau angka',
+        'diterima_dari.regex' => 'Nama Penerima tidak boleh menggunakan simbol atau angka',
+    ]);
+
+    $surat = SuratMasuk::findOrFail($id);
+
+    $data = [
+        'nomor' => $request->nomor,
+        'tanggal_surat' => $request->tanggal_surat,
+        'tanggal_diterima' => $request->tanggal_diterima,
+        'pengirim' => $request->pengirim,
+        'diterima_dari' => $request->diterima_dari,
+        'perihal' => $request->perihal,
+        'sifat' => $request->sifat,
+        'user_id' => auth()->user()->id,
+        'catatan_sekretariat' => $request->catatan_sekretariat,
+    ];
+
+    if ($request->hasFile('file')) {
+        // Hapus file lama
+        if ($surat->file && Storage::disk('public')->exists('assets/img/surat/' . $surat->file)) {
+            Storage::disk('public')->delete('assets/img/surat/' . $surat->file);
         }
 
-        $Surat_masuk->update($data);
-        return redirect('/surat/surat-masuk')->with('success_message', 'Surat Updated!');
+        // Simpan file baru
+        $file = $request->file('file');
+        $file_name = Str::random(20) . '.' . $file->getClientOriginalExtension();
+        $file->storeAs('assets/img/surat', $file_name, 'public');
+        $data['file'] = $file_name;
+    }
+
+    $surat->update($data);
+
+    return redirect('/surat/surat-masuk')->with('success_message', 'Surat berhasil diperbarui!');
     }
     public function arsip($id)
     {
@@ -268,14 +274,29 @@ class SuratController extends Controller
         }
         return back();
     }
+
     public function destroy($id)
     {
         $hapus = SuratMasuk::findOrFail($id);
+
+        // Cek apakah ada file dan hapus dari storage
+        if ($hapus->file) {
+            $filePath = public_path('storage/assets/img/surat/' . $hapus->file);
+            if (file_exists($filePath)) {
+                unlink($filePath); // hapus file dari sistem file
+            }
+        }
+
+        // Hapus data dari tabel
         $hapus->delete();
+
+        // Hapus data disposisi yang berkaitan
         $disposisi = SuratDisposisi::where('surat_masuk_id', $id);
         $disposisi->delete();
+
         return back()->with('sukses', 'Berhasil Hapus Surat');
     }
+
     public function diagram($id)
     {
         $surat_masuk = SuratMasuk::findOrFail($id);
@@ -294,8 +315,8 @@ class SuratController extends Controller
 
         foreach ($disposisi as $item) {
             $jabatan = DB::table('users')
-                ->join('pegawai', 'users.id', '=', 'pegawai.user_id')
-                ->join('pejabats', 'pegawai.id', '=', 'pejabats.pegawai_id')
+                ->join('pegawais', 'users.id', '=', 'pegawais.user_id')
+                ->join('pejabats', 'pegawais.id', '=', 'pejabats.pegawai_id')
                 ->where('users.id', $item->user_id)
                 ->select('pejabats.jabatan')
                 ->first();
