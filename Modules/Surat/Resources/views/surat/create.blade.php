@@ -41,6 +41,11 @@
                                     value="{{ old('perihal') }}"
                                     placeholder="Masukkan perihal surat masuk, tanpa simbol dan angka" required>
                             </div>
+                            @if ($errors->has('perihal'))
+                                    <div style="width:auto; color:#dc4c64; margin-top:0.25rem;">
+                                        {{ $errors->first('perihal') }}
+                                    </div>
+                                @endif
                             <div class="col-md-6">
                                 <label for="pengirim" class="col-form-label">Pengirim
                                     <span class="text-danger fw-bold">*</span>
@@ -49,6 +54,11 @@
                                     value="{{ old('pengirim') }}" placeholder="Masukkan pengirim, tanpa simbol dan angka"
                                     required>
                             </div>
+                            @if ($errors->has('pengirim'))
+                                    <div style="width:auto; color:#dc4c64; margin-top:0.25rem;">
+                                        {{ $errors->first('pengirim') }}
+                                    </div>
+                                @endif
                         </div>
                         <div class="row mb-2">
                             <div class="col-md-6">
@@ -59,6 +69,11 @@
                                     value="{{ old('diterima_dari') }}"
                                     placeholder="Masukkan diterima dari, tanpa simbol dan angka" required>
                             </div>
+                            @if ($errors->has('diterima_dari'))
+                                    <div style="width:auto; color:#dc4c64; margin-top:0.25rem;">
+                                        {{ $errors->first('diterima_dari') }}
+                                    </div>
+                                @endif
                             <div class="col-md-6">
                                 <label for="tanggal_diterima" class="col-form-label">Tanggal Diterima
                                     <span class="text-danger fw-bold">*</span>
