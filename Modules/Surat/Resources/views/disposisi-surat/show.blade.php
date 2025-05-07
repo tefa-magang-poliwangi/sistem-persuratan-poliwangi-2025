@@ -10,7 +10,8 @@
             <div class="card">
                 <div class="card-header">Surat {{ $surat->pengirim }}</div>
                 <div class="card-body">
-                    <a href="{{ url('/surat/disposisi-surat') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Kembali</button></a>
+                    <a href="{{ url('/surat/disposisi-surat') }}" title="Back"><button class="btn btn-warning btn-sm"><i
+                                class="fa fa-arrow-left" aria-hidden="true"></i> Kembali</button></a>
                     <br />
                     <br />
 
@@ -37,9 +38,14 @@
                                 </tr>
                                 <tr>
                                     <th>File</th>
-                                    <td><a href="{{ asset('storage/assets/img/surat/' . $surat->file) }}" title="Lihat File" target="_blank"><button class="btn btn-primary btn-sm"><i class="fas fa-eye" aria-hidden="true"></i> Lihat File</button></a>
-                                        <a href="{{ asset('storage/assets/img/surat/' . $surat->file) }}" title="Download file" download="Surat dari {{ $surat->pengirim }}"><button class="btn btn-success btn-sm"><i class="fas fa-cloud-download-alt" aria-hidden="true"></i> Download</button></a>
-                                        
+                                    <td><a href="{{ asset('storage/assets/img/surat/' . $surat->file) }}" title="Lihat File"
+                                            target="_blank"><button class="btn btn-primary btn-sm"><i class="fas fa-eye"
+                                                    aria-hidden="true"></i> Lihat File</button></a>
+                                        <a href="{{ asset('storage/assets/img/surat/' . $surat->file) }}"
+                                            title="Download file" download="Surat dari {{ $surat->pengirim }}"><button
+                                                class="btn btn-success btn-sm"><i class="fas fa-cloud-download-alt"
+                                                    aria-hidden="true"></i> Download</button></a>
+
                                     </td>
                                     <th>Catatan Sekretariat</th>
                                     <td>{{ $surat->catatan_sekretariat }}</td>
@@ -64,13 +70,15 @@
             <div class="card">
                 <div class="card-header">Tulis Disposisi Surat {{ $surat->pengirim }}</div>
                 <div class="card-body">
-                    <form action="{{ url('surat/disposisi-surat/' . $surat->id) }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ url('surat/disposisi-surat/' . $surat->id) }}" method="post"
+                        enctype="multipart/form-data">
                         @csrf
                         @method('patch')
                         <div class="row mb-2">
                             <div class="col-md-6">
-                                <label for="" class="col-form-label">Tujuan Disposisi <span class="text-danger fw-bold">*</span></label>
-                                <select class="form-control" name="disposisi" required>
+                                <label for="tujuan_disposisi" class="col-form-label">Tujuan Disposisi <span
+                                        class="text-danger fw-bold">*</span></label>
+                                <select class="form-control" name="disposisi" id="tujuan_disposisi" required>
                                     <option value="" selected disabled>--Pilih--</option>
                                     @foreach ($user as $item)
                                         <option value="{{ $item->jabatan }}">{{ $item->jabatan }}</option>
@@ -84,8 +92,11 @@
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <label for="example-text-input" class="col-form-label">Waktu <span class="text-danger fw-bold">*</span></label>
-                                <input class="form-control" type="datetime-local" name="waktu" value="{{ (new DateTime('now', new DateTimeZone('Asia/Jakarta')))->format('Y-m-d\TH:i') }}" required>
+                                <label for="waktu" class="col-form-label">Waktu <span
+                                        class="text-danger fw-bold">*</span></label>
+                                <input class="form-control" type="datetime-local" name="waktu" id="waktu"
+                                    value="{{ (new DateTime('now', new DateTimeZone('Asia/Jakarta')))->format('Y-m-d\TH:i') }}"
+                                    required>
                             </div>
                         </div>
                         <div class="row mb-2" hidden>
@@ -96,12 +107,18 @@
 
                         </div>
                         <div class="mb-3">
-                            <label for="">Disposisi Singkat <span class="text-danger fw-bold">*</span></label>
-                            <textarea type="" name="disposisi_singkat" id="" class="form-control" required></textarea>
+                            <label for="disposisi_singkat">Disposisi Singkat
+                                <span class="text-danger fw-bold">*</span>
+                            </label>
+                            <textarea type="text" name="disposisi_singkat" id="disposisi_singkat" class="form-control"
+                                placeholder="Masukkan pesan disposisi singkat" required></textarea>
                         </div>
                         <div class="mb-3">
-                            <label for="">Disposisi Narasi</label>
-                            <textarea type="" name="disposisi_narasi" id="" class="form-control" ></textarea>
+                            <label for="disposisi_narasi">Disposisi Narasi
+                                <span class="text-primary fw-bold">* (opsional)</span>
+                            </label>
+                            <textarea type="text" name="disposisi_narasi" id="disposisi_narasi" class="form-control"
+                                placeholder="Masukkan pesan disposisi narasi"></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </form>

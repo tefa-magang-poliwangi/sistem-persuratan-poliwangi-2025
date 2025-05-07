@@ -21,7 +21,7 @@ class DisposisiSuratController extends Controller
         $disposisi = SuratMasuk::where('status', '2')
             ->orWhere('status', '3')
             ->orWhere('status', '6')
-            ->orderBy('created_at','DESC')
+            ->orderBy('created_at', 'DESC')
             ->get();
         return view('surat::disposisi-surat.index', compact('disposisi'));
     }
@@ -44,18 +44,33 @@ class DisposisiSuratController extends Controller
     public function show($id)
     {
         $surat = SuratMasuk::findOrFail($id);
+
+        // pengecekan jika surat masuk adalah berjenis arsip, maka akan di redirect ke surat masuk index
+        if ($surat->status === 5) {
+            return redirect('/surat/disposisi-surat')->with('warning', 'surat masuk adalah arsip');
+        }
+
+        // mengecek jikalau surat masuk sudah dilakukan pengajuan diposisi maka tidak di izinkan untuk mengajukan disposisi lagi
+        if ($surat) {
+            $surat_disposisi = SuratDisposisi::where('surat_masuk_id', $surat->id)->first();
+
+            if ($surat_disposisi) {
+                return redirect('/surat/disposisi-surat')->with('warning', 'surat masuk sudah dilakukan disposisi');
+            }
+        }
+
         $user = DB::table('pejabats')->select('pejabats.jabatan')->where('pejabats.jabatan', 'like', 'Wakil Direktur%')->get();
         return view('surat::disposisi-surat.show', compact('surat', 'user'));
     }
+
     public function detail($id)
     {
-
         $surat_dispo = SuratDisposisi::with('surat_masuk')->where('surat_masuk_id', $id)->firstOrFail();
         return view('surat::disposisi-surat.detail', compact('surat_dispo'));
     }
+
     public function editDisposisi($id)
     {
-
         $surat = SuratDisposisi::where('surat_masuk_id', $id)->firstOrFail();
         $user = DB::table('pejabats')->select('pejabats.jabatan')->where('pejabats.jabatan', 'like', 'Wakil Direktur%')->get();
         // $user = User::where('username', 'wadir1')->orWhere('username', 'wadir2')->orWhere('username','wadir3')->get();

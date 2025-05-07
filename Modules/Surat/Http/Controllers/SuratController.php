@@ -64,9 +64,9 @@ class SuratController extends Controller
             'perihal' => 'regex:/^[a-zA-Z\s]+$/',
             'file' => 'required|mimes:pdf|max:5048', // hanya izinkan PDF, maksimal 2MB
         ], [
-            'pengirim' => 'Nama Pengirim tidak boleh menggunakan simbol atau angka', 
-            'perihal' => 'Perihal tidak boleh menggunakan simbol atau angka', 
-            'diterima_dari' => 'Nama Penerima tidak boleh menggunakan simbol atau angka', 
+            'pengirim' => 'Nama Pengirim tidak boleh menggunakan simbol atau angka',
+            'perihal' => 'Perihal tidak boleh menggunakan simbol atau angka',
+            'diterima_dari' => 'Nama Penerima tidak boleh menggunakan simbol atau angka',
         ]);
         $data = [
             'nomor' => $request->nomor,
@@ -136,6 +136,12 @@ class SuratController extends Controller
     public function edit($id)
     {
         $suratmasuk = SuratMasuk::findOrFail($id);
+
+        // jika surat arsip, maka tidak diperbolehkan untuk diedit
+        if ($suratmasuk->status === 5) {
+            return redirect('/surat/surat-masuk')->with('warning', 'Surat adalah arsip');
+        }
+
         return view('surat::surat.edit', compact('suratmasuk'));
     }
 
@@ -153,9 +159,9 @@ class SuratController extends Controller
             'perihal' => 'regex:/^[a-zA-Z\s]+$/',
             'file' => 'mimes:pdf|max:5048', // hanya izinkan PDF, maksimal 2MB
         ], [
-            'pengirim' => 'Nama Pengirim tidak boleh menggunakan simbol atau angka', 
-            'perihal' => 'Perihal tidak boleh menggunakan simbol atau angka', 
-            'diterima_dari' => 'Nama Penerima tidak boleh menggunakan simbol atau angka', 
+            'pengirim' => 'Nama Pengirim tidak boleh menggunakan simbol atau angka',
+            'perihal' => 'Perihal tidak boleh menggunakan simbol atau angka',
+            'diterima_dari' => 'Nama Penerima tidak boleh menggunakan simbol atau angka',
         ]);
         $Surat_masuk = SuratMasuk::findOrFail($id);
         $data = [
@@ -170,7 +176,7 @@ class SuratController extends Controller
             'catatan_sekretariat' => $request->catatan_sekretariat,
         ];
         if (!empty($request->hasFile('file'))) {
-            $destination = '/storage/app/public/assets/img/surat/' . $Surat_masuk->file;
+            $destination = `/storage/app/public/assets/img/surat/$Surat_masuk->file`;
             if (File::exists($destination)) {
                 File::delete($destination);
             }
@@ -219,7 +225,6 @@ class SuratController extends Controller
                 'disposisi' => implode(',', $request->disposisi),
                 'status' => 6,
             ];
-
         } else {
             $data = [
                 'disposisi' => implode(',', $request->disposisi),
@@ -301,7 +306,7 @@ class SuratController extends Controller
                 'status' => 'king',
                 'parent' => $jabatan->jabatan
             ];
-            
+
             // Menambahkan node hanya jika belum ada
             if (!array_filter($nodes, fn($n) => $n['key'] === $node['key'])) {
                 $nodes[] = $node;
@@ -332,7 +337,7 @@ class SuratController extends Controller
                 'parent' => 'Sekretaris'
             ];
         }
-        
+
         return view('surat::surat.diagram', [
             'diagramNodes' => $nodes,
             'diagramLinks' => $links,

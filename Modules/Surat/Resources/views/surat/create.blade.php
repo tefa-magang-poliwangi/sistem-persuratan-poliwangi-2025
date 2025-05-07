@@ -10,46 +10,72 @@
             <div class="card">
                 <div class="card-header">Tambah Surat</div>
                 <div class="card-body">
-                    
-                    <a href="{{ url( 'surat/surat-masuk' ) }}" title="Kembali"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Kembali</button></a>
+
+                    <a href="{{ url('surat/surat-masuk') }}" title="Kembali"><button class="btn btn-warning btn-sm"><i
+                                class="fa fa-arrow-left" aria-hidden="true"></i> Kembali</button></a>
                     <br>
                     <form action="{{ url('surat/surat-masuk') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="row mb-2">
                             <div class="col-md-6">
-                                <label for="example-text-input" class="col-form-label">Nomor Surat <span class="text-danger fw-bold">*</span></label>
-                                <input class="form-control" type="text" name="nomor" value="{{ old('nomor') }}" required>
+                                <label for="nomor" class="col-form-label">Nomor Surat
+                                    <span class="text-danger fw-bold">*</span>
+                                </label>
+                                <input class="form-control" type="text" name="nomor" id="nomor"
+                                    value="{{ old('nomor') }}" placeholder="Masukkan nomor surat yang valid" required>
                             </div>
                             <div class="col-md-6">
-                                <label for="example-text-input" class="col-form-label">Tanggal Surat <span class="text-danger fw-bold">*</span></label>
-                                <input class="form-control" type="date" name="tanggal_surat" value="{{ old('tanggal_surat') }}" required>
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-md-6">
-                                <label for="example-text-input" class="col-form-label">Perihal <span class="text-danger fw-bold">*</span></label>
-                                <input class="form-control" type="text" name="perihal" value="{{ old('perihal') }}" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="example-text-input" class="col-form-label">Pengirim <span class="text-danger fw-bold">*</span></label>
-                                <input class="form-control" type="text" name="pengirim" value="{{ old('pengirim') }}" required>
+                                <label for="tanggal_surat" class="col-form-label">Tanggal Surat
+                                    <span class="text-danger fw-bold">*</span>
+                                </label>
+                                <input class="form-control" type="date" name="tanggal_surat" id="tanggal_surat"
+                                    value="{{ old('tanggal_surat') }}" required>
                             </div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-md-6">
-                                <label for="example-text-input" class="col-form-label">Diterima dari <span class="text-danger fw-bold">*</span></label>
-                                <input class="form-control" type="text" name="diterima_dari" value="{{ old('diterima_dari') }}" required>
+                                <label for="perihal" class="col-form-label">Perihal
+                                    <span class="text-danger fw-bold">*</span>
+                                </label>
+                                <input class="form-control" type="text" name="perihal" id="perihal"
+                                    value="{{ old('perihal') }}"
+                                    placeholder="Masukkan perihal surat masuk, tanpa simbol dan angka" required>
                             </div>
                             <div class="col-md-6">
-                                <label for="example-text-input" class="col-form-label">Tanggal Diterima <span class="text-danger fw-bold">*</span></label>
-                                <input class="form-control" type="datetime-local" name="tanggal_diterima" value="{{ old('tanggal_diterima') }}" required>
+                                <label for="pengirim" class="col-form-label">Pengirim
+                                    <span class="text-danger fw-bold">*</span>
+                                </label>
+                                <input class="form-control" type="text" name="pengirim" id="pengirim"
+                                    value="{{ old('pengirim') }}" placeholder="Masukkan pengirim, tanpa simbol dan angka"
+                                    required>
                             </div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-md-6">
-                                <label for="">Sifat <span class="text-danger fw-bold">*</span></label>
-                                <select name="sifat" class="form-control" id="" value="{{ old('sifat') }}" required>
-                                    <option value="" disabled {{ old('sifat') == '' ? 'selected' : '' }}>--Pilih--</option>
+                                <label for="diterima_dari" class="col-form-label">Diterima dari
+                                    <span class="text-danger fw-bold">*</span>
+                                </label>
+                                <input class="form-control" type="text" name="diterima_dari" id="diterima_dari"
+                                    value="{{ old('diterima_dari') }}"
+                                    placeholder="Masukkan diterima dari, tanpa simbol dan angka" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="tanggal_diterima" class="col-form-label">Tanggal Diterima
+                                    <span class="text-danger fw-bold">*</span>
+                                </label>
+                                <input class="form-control" type="datetime-local" name="tanggal_diterima"
+                                    id="tanggal_diterima" value="{{ old('tanggal_diterima') }}" required>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <label for="sifat">Sifat
+                                    <span class="text-danger fw-bold">*</span>
+                                </label>
+                                <select name="sifat" class="form-control" id="sifat" value="{{ old('sifat') }}"
+                                    required>
+                                    <option value="" disabled {{ old('sifat') == '' ? 'selected' : '' }}>--Pilih--
+                                    </option>
                                     <option value="biasa">Biasa</option>
                                     <option value="segera">segera</option>
                                     <option value="penting">penting</option>
@@ -60,23 +86,30 @@
                             <div class="col-md-6">
                                 <label for="status_surat">Pilih Tindakan <span class="text-danger fw-bold">*</span></label>
                                 <select id="status_surat" name="status" class="form-control" required>
-                                    <option value="" disabled {{ old('status') == '' ? 'selected' : '' }}>--Pilih--</option>
+                                    <option value="" disabled {{ old('status') == '' ? 'selected' : '' }}>--Pilih--
+                                    </option>
                                     <option value="5" {{ old('status') == '5' ? 'selected' : '' }}>Arsipkan</option>
-                                    <option value="2" {{ old('status') == '2' ? 'selected' : '' }}>Ajukan Ke Pimpinan</option>
+                                    <option value="2" {{ old('status') == '2' ? 'selected' : '' }}>Ajukan Ke Pimpinan
+                                    </option>
                                 </select>
                             </div>
                         </div>
                         <div class="mb-2">
-                            <label for="">Catatan Sekretariat</label>
-                            <textarea type="" name="catatan_sekretariat" id="" class="form-control">{{ old('catatan_sekretariat') }}</textarea>
+                            <label for="catatan_sekretariat">Catatan Sekretariat
+                                <span class="text-primary fw-bold">* (opsional)</span>
+                            </label>
+                            <textarea type="text" name="catatan_sekretariat" id="catatan_sekretariat" class="form-control"
+                                placeholder="Masukkan catatan sekretariat">{{ old('catatan_sekretariat') }}</textarea>
                         </div>
                         <div class="col-md-12">
-                            <label for="example-text-input" class="col-form-label">File <span class="text-danger fw-bold">*</span></label>
-                            <input class="form-control" type="file" name="file" value="{{ old('file') }}" required>
+                            <label for="file" class="col-form-label">File <span
+                                    class="text-danger fw-bold">*</span></label>
+                            <input class="form-control" type="file" name="file" id="file"
+                                value="{{ old('file') }}" required>
                             @if ($errors->has('file'))
-                                    <div style="width:auto; color:#dc4c64; margin-top:0.25rem;">
-                                        {{ $errors->first('file') }}
-                                    </div>
+                                <div style="width:auto; color:#dc4c64; margin-top:0.25rem;">
+                                    {{ $errors->first('file') }}
+                                </div>
                             @endif
                         </div>
                         {{-- <div class="row mb-2">
