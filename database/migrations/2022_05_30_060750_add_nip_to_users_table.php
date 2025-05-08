@@ -14,7 +14,7 @@ class AddNipToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('nip')->nullable()->after('name');
+            $table->string('nip')->nullable()->after('name')->constrained('pegawais')->nullOnDelete();
             $table->string('asal_instansi')->nullable()->after('nip');
             $table->string('jabatan_fungsional')->nullable()->after('nip');
             $table->string('pangkat_gol')->nullable()->after('jabatan_fungsional');
