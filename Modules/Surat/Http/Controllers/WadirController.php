@@ -11,6 +11,7 @@ use Modules\Surat\Entities\BuktiTugas;
 use Modules\Surat\Entities\SuratMasuk;
 use Modules\Surat\Entities\SuratDisposisi;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Facades\Auth;
 
 class WadirController extends Controller
 {
@@ -20,16 +21,30 @@ class WadirController extends Controller
      */
     public function index()
     {
-        $jabatan = DB::table('users')
-            ->join('pegawais', 'users.username', '=', 'pegawais.username')
-            ->join('pejabats', 'pegawais.id', '=', 'pejabats.pegawai_id')
-            ->where('users.id', auth()->id())
-            ->select('pejabats.jabatan')
-            ->first();
+        // mengambil user yang sedang login saat ini
+        $user = Auth()->user();
 
-        $surat = null;
+        // dd($user->getRoleNames());
 
-        if ($jabatan) {
+        // hanya mengizinkan user dengan role pejabat: direktur, wadir1, wadir2, wadir3
+        if (
+            $user->getRoleNames()->contains('direktur') ||
+            $user->getRoleNames()->contains('wadir1') ||
+            $user->getRoleNames()->contains('wadir2') ||
+            $user->getRoleNames()->contains('wadir3')
+        ) {
+            // get data jabatan berdasarkan user pegawai
+            $jabatan = DB::table('users')
+                ->join('pegawais', 'users.nip', '=', 'pegawais.nip') // diubah
+                ->join('pejabats', 'pegawais.id', '=', 'pejabats.pegawai_id')
+                ->where('users.id', auth()->id())
+                ->select('pejabats.jabatan')
+                ->first();
+
+            // dd($jabatan);
+
+            // $surat = null;
+
             $surat = DB::table('surat_disposisis')
                 ->join('surat_masuks', 'surat_disposisis.surat_masuk_id', '=', 'surat_masuks.id')
                 ->whereRaw('FIND_IN_SET(?, surat_disposisis.tujuan_disposisi)', [$jabatan->jabatan])
@@ -37,13 +52,15 @@ class WadirController extends Controller
                 ->select('surat_disposisis.*', 'surat_masuks.*')
                 ->orderBy('surat_masuks.created_at', 'DESC')
                 ->get();
+
+            $data = [
+                'surat' => $surat
+            ];
+
+            return view('surat::wadir.index', $data);
+        } else {
+            return redirect('/dashboard')->with('sukses', 'Pengguna tidak di-izinkan');
         }
-
-        $data = [
-            'surat' => $surat
-        ];
-
-        return view('surat::wadir.index', $data);
     }
 
     /**
@@ -63,15 +80,24 @@ class WadirController extends Controller
     public function show($id)
     {
         $surat = SuratMasuk::findOrFail($id);
-        $user = DB::table('pejabats')
-            ->select('pejabats.jabatan')
-            ->where(function ($query) {
-                $query->where('pejabats.jabatan', 'not like', 'Direktur%')
-                    ->where('pejabats.jabatan', 'not like', 'Wakil Direktur%');
-            })->get();
-        $user_direktur = User::where('name', 'Direktur')->first();
-        $disposisi = SuratDisposisi::where('surat_masuk_id', $id)->where('user_id', $user_direktur->id)->orderBy('created_at', 'DESC')->first();
-        return view('surat::wadir.show', compact('surat', 'user', 'disposisi'));
+
+        // menolak jika surat adalah arsip (dengan status 5)
+        if ($surat->status === 5) {
+            return redirect('/surat/wadir')->with('warning', 'Surat Arsip tidak diperbolehkan');
+        } else {
+            $user = DB::table('pejabats')
+                ->select('pejabats.jabatan')
+                ->where(function ($query) {
+                    $query->where('pejabats.jabatan', 'not like', 'Direktur%')
+                        ->where('pejabats.jabatan', 'not like', 'Wakil Direktur%');
+                })->get();
+
+            $user_direktur = User::where('name', 'Direktur')->first();
+
+            $disposisi = SuratDisposisi::where('surat_masuk_id', $id)->where('user_id', $user_direktur->id)->orderBy('created_at', 'DESC')->first();
+
+            return view('surat::wadir.show', compact('surat', 'user', 'disposisi'));
+        }
     }
 
     /**
@@ -82,21 +108,34 @@ class WadirController extends Controller
     public function detail($id)
     {
         $surat = SuratMasuk::findOrFail($id);
-        $user = User::all();
-        $surat_dispo = SuratDisposisi::with('surat_masuk')->where('surat_masuk_id', $id)->where('user_id', auth()->user()->id)->first();
-        $bukti = BuktiTugas::with('surat_masuk')->where('surat_id', $id)->first();
-        return view('surat::wadir.detail', compact('surat', 'user', 'surat_dispo', 'bukti'));
+
+        // menolak jika surat adalah arsip (dengan status 5)
+        if ($surat->status === 5) {
+            return redirect('/surat/wadir')->with('warning', 'Surat Arsip tidak diperbolehkan');
+        } else {
+            $user = User::all();
+            $surat_dispo = SuratDisposisi::with('surat_masuk')->where('surat_masuk_id', $id)->where('user_id', auth()->user()->id)->first();
+            $bukti = BuktiTugas::with('surat_masuk')->where('surat_id', $id)->first();
+            return view('surat::wadir.detail', compact('surat', 'user', 'surat_dispo', 'bukti'));
+        }
     }
+
     public function edit($id)
     {
         $surat = SuratDisposisi::where('surat_masuk_id', $id)->where('user_id', auth()->user()->id)->first();
-        $user = DB::table('pejabats')
-            ->select('pejabats.jabatan')
-            ->where(function ($query) {
-                $query->where('pejabats.jabatan', 'not like', 'Direktur%')
-                    ->where('pejabats.jabatan', 'not like', 'Wakil Direktur%');
-            })->get();
-        return view('surat::wadir.edit', compact('surat', 'user'));
+
+        if ($surat) {
+            $user = DB::table('pejabats')
+                ->select('pejabats.jabatan')
+                ->where(function ($query) {
+                    $query->where('pejabats.jabatan', 'not like', 'Direktur%')
+                        ->where('pejabats.jabatan', 'not like', 'Wakil Direktur%');
+                })->get();
+
+            return view('surat::wadir.edit', compact('surat', 'user'));
+        } else {
+            return redirect('/surat/wadir')->with('sukses', 'Surat Disposisi Tidak ditemukan');
+        }
     }
 
     /**

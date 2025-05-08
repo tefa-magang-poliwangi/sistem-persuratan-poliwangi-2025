@@ -10,7 +10,8 @@
             <div class="card">
                 <div class="card-header">Surat {{ $surat->pengirim }}</div>
                 <div class="card-body">
-                    <a href="{{ url('/surat/wadir') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Kembali</button></a>
+                    <a href="{{ url('/surat/wadir') }}" title="Back"><button class="btn btn-warning btn-sm"><i
+                                class="fa fa-arrow-left" aria-hidden="true"></i> Kembali</button></a>
                     <br />
                     <br />
                     <div class="table-responsive">
@@ -37,16 +38,18 @@
                                 <tr>
                                     <th>Surat</th>
                                     <td>
-                                        <a href="{{ asset('storage/assets/img/surat/' . $surat->file) }}" title="Lihat File" target="_blank">
+                                        <a href="{{ asset('storage/assets/img/surat/' . $surat->file) }}" title="Lihat File"
+                                            target="_blank">
                                             <button class="btn btn-primary btn-sm">
                                                 <i class="fas fa-eye" aria-hidden="true"></i> Lihat File
                                             </button>
                                         </a>
-                                        <a href="{{ asset('storage/assets/img/surat/' . $surat->file) }}" title="Download file" download="Surat dari {{ $surat->pengirim }}">
+                                        <a href="{{ asset('storage/assets/img/surat/' . $surat->file) }}"
+                                            title="Download file" download="Surat dari {{ $surat->pengirim }}">
                                             <button class="btn btn-warning btn-sm">
                                                 <i class="fas fa-cloud-download-alt" aria-hidden="true"></i> Download
                                             </button>
-                                        </a> 
+                                        </a>
                                     </td>
                                     <th>Isi Disposisi Direktur</th>
                                     <td colspan="3">
@@ -71,15 +74,15 @@
                             <tbody>
                                 <tr>
                                     <th>Disposisi Singkat</th>
-                                    <td>{{$disposisi->disposisi_singkat}}</td>
+                                    <td>{{ $disposisi->disposisi_singkat }}</td>
                                 </tr>
                                 <tr>
                                     <th>Disposisi Narasi</th>
-                                    <td>{{$disposisi->disposisi_narasi}}</td>
+                                    <td>{{ $disposisi->disposisi_narasi }}</td>
                                 </tr>
                                 <tr>
                                     <th>Tujuan Disposisi</th>
-                                    <td>{{$disposisi->tujuan_disposisi}}</td>
+                                    <td>{{ $disposisi->tujuan_disposisi }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -98,8 +101,9 @@
                         @method('patch')
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="">Tujuan Disposisi <span class="text-danger fw-bold">*</span></label>
-                                <select name="disposisi[]" class="form-control select2" id="" multiple="multiple" required>
+                                <label for="disposisi">Tujuan Disposisi <span class="text-danger fw-bold">*</span></label>
+                                <select name="disposisi[]" class="form-control select2" id="disposisi" multiple="multiple"
+                                    required>
                                     <option value="Sekretaris">Kembali Ke Sekretaris</option>
                                     <option value="Direktur">Kembali Ke Direktur</option>
                                     @foreach ($user as $item)
@@ -110,26 +114,32 @@
                             <div class="col-md-6" hidden>
                                 <label for="example-text-input">Tujuan Disposisi</label>
                                 <input name="tujuan_disposisi[]" class="form-control select2" multiple="multiple">
-                              
+
                             </div>
                             <div class="col-md-6">
-                                <label for="example-text-input">Waktu <span class="text-danger fw-bold">*</span></label>
-                                <input class="form-control" type="datetime-local" name="waktu" value="{{ (new DateTime('now', new DateTimeZone('Asia/Jakarta')))->format('Y-m-d\TH:i') }}">
+                                <label for="waktu">Waktu <span class="text-danger fw-bold">*</span></label>
+                                <input class="form-control" type="datetime-local" name="waktu" id="waktu"
+                                    value="{{ (new DateTime('now', new DateTimeZone('Asia/Jakarta')))->format('Y-m-d\TH:i') }}">
                             </div>
                         </div>
                         <div class="row mb-3" hidden>
                             <div class="col-md-6">
                                 <label for="example-text-input" class="col-form-label">Induk</label>
-                                <input class="form-control" type="text" name="induk" value="{{$surat->id}}">
+                                <input class="form-control" type="text" name="induk" value="{{ $surat->id }}">
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="">Disposisi Singkat <span class="text-danger fw-bold">*</span></label>
-                            <textarea type="" name="disposisi_singkat" id="" class="form-control" required></textarea>
+                            <label for="disposisi_singkat">Disposisi Singkat <span
+                                    class="text-danger fw-bold">*</span></label>
+                            <textarea type="text" name="disposisi_singkat" id="disposisi_singkat" class="form-control"
+                                placeholder="Masukkan disposisi singkat" required></textarea>
                         </div>
                         <div class="mb-3">
-                            <label for="">Disposisi Narasi</label>
-                            <textarea type="" name="disposisi_narasi" id="" class="form-control"></textarea>
+                            <label for="disposisi_narasi">Disposisi Narasi
+                                <span class="text-primary fw-bold">* (opsional)</span>
+                            </label>
+                            <textarea type="text" name="disposisi_narasi" id="disposisi_narasi" class="form-control"
+                                placeholder="Masukkan disposisi narasi"></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </form>

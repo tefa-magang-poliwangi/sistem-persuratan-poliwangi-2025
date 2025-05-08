@@ -4,17 +4,18 @@
     <h1 class="m-0 text-dark"></h1>
 @stop
 @section('content')
-<style>
-    body{
-        text-transform: capitalize;
-    }
-</style>
+    <style>
+        body {
+            text-transform: capitalize;
+        }
+    </style>
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">Data Surat Masuk</div>
                 <div class="card-body">
-                    <a href="{{ url('/surat/surat-masuk/create') }}" type="button" class="btn btn-sm btn-primary waves-effect waves-light mb-3">
+                    <a href="{{ url('/surat/surat-masuk/create') }}" type="button"
+                        class="btn btn-sm btn-primary waves-effect waves-light mb-3">
                         <i class="fa fa-plus me-2"></i> Tambah Surat</a>
                     <div class="table-responsive table-striped">
                         <table class="table align-middle table-nowrap mb-0 datatables" id="tabel_surat">
@@ -36,7 +37,8 @@
                                         <td class="text-center">
                                             {{ $loop->iteration }}
                                         </td>
-                                        <td><a href="javascript: void(0);" class="text-body fw-bold">{{ $item->nomor }}</a> </td>
+                                        <td><a href="javascript: void(0);" class="text-body fw-bold">{{ $item->nomor }}</a>
+                                        </td>
                                         <td>
                                             {{ date('d F Y', strtotime($item->tanggal_surat)) }}
                                         </td>
@@ -64,21 +66,50 @@
                                         </td>
                                         <td class="text-center">
                                             @if ($item->status == 6)
-                                            <button type="button" class="btn btn-sm mt-1 btn-danger" data-toggle="modal" data-target="#hapus" onclick="hapus({{$item->id}})"><i class="fas fa-trash"></i></button>
-                                            <a href="{{ url('surat/surat-masuk/' . $item->id) }}"><button type="button" class="btn btn-primary btn-sm mt-1"><i class="fas fa-eye"></i></button></a>
-                                            <button type="button" class="btn btn-secondary btn-sm mt-1" data-toggle="modal" data-target="#arsip" onclick="arsip({{$item->id}})"><i class="fas fa-file-archive"></i></button>
-                                            <button type="button" class="btn btn-success btn-sm mt-1" data-toggle="modal" data-target="#selesai" onclick="selesai({{$item->id}})"><i class="fas fa-check"></i></button>
+                                                <button type="button" class="btn btn-sm mt-1 btn-danger"
+                                                    data-toggle="modal" data-target="#hapus"
+                                                    onclick="hapus({{ $item->id }})"><i
+                                                        class="fas fa-trash"></i></button>
+                                                <a href="{{ url('surat/surat-masuk/' . $item->id) }}"><button type="button"
+                                                        class="btn btn-primary btn-sm mt-1"><i
+                                                            class="fas fa-eye"></i></button></a>
+                                                <button type="button" class="btn btn-secondary btn-sm mt-1"
+                                                    data-toggle="modal" data-target="#arsip"
+                                                    onclick="arsip({{ $item->id }})"><i class="fas fa-file-archive"
+                                                        title="Arsip?"></i></button>
+                                                <button type="button" class="btn btn-success btn-sm mt-1"
+                                                    data-toggle="modal" data-target="#selesai"
+                                                    onclick="selesai({{ $item->id }})"><i class="fas fa-check"
+                                                        title="Setujui?"></i></button>
                                             @elseif ($item->status == 7)
-                                            <button type="button" class="btn btn-sm mt-1 btn-danger" data-toggle="modal" data-target="#hapus" onclick="hapus({{$item->id}})"><i class="fas fa-trash"></i></button>
-                                            <a href="{{ url('surat/surat-masuk/' . $item->id) }}"><button type="button" class="btn btn-primary btn-sm mt-1"><i class="fas fa-eye"></i></button></a>
-                                            <a href="{{ url('surat/surat-masuk/diagram/' . $item->id) }}"><button type="button" class="btn btn-success btn-sm mt-1"><i class="fas fa-chart-line"></i></button></a>
-                                            <a href="{{ url('surat/surat-masuk/lembar-disposisi/' . $item->id) }}" title="Lihat File" target="_blank"><button class="btn btn-dark btn-sm mt-1"><i class="fas fa-clipboard" aria-hidden="true"></i></button></a>
-                                                
-                                            @else   
-                                            <a href="{{ url('surat/surat-masuk/' . $item->id . '/edit') }}"><button type="button" class="btn btn-warning btn-sm mt-1"><i class="fas fa-pencil-alt"></i></button></a>
-                                            <button type="button" class="btn btn-sm mt-1 btn-danger" data-toggle="modal" data-target="#hapus" onclick="hapus({{$item->id}})"><i class="fas fa-trash"></i></button>
-                                            <a href="{{ url('surat/surat-masuk/' . $item->id) }}"><button type="button" class="btn btn-primary btn-sm mt-1"><i class="fas fa-eye"></i></button></a>
-                                            <a href="{{ url('surat/surat-masuk/diagram/' . $item->id) }}"><button type="button" class="btn btn-success btn-sm mt-1"><i class="fas fa-chart-line"></i></button></a>
+                                                <button type="button" class="btn btn-sm mt-1 btn-danger"
+                                                    data-toggle="modal" data-target="#hapus"
+                                                    onclick="hapus({{ $item->id }})"><i
+                                                        class="fas fa-trash"></i></button>
+                                                <a href="{{ url('surat/surat-masuk/' . $item->id) }}"><button
+                                                        type="button" class="btn btn-primary btn-sm mt-1"><i
+                                                            class="fas fa-eye"></i></button></a>
+                                                <a href="{{ url('surat/surat-masuk/diagram/' . $item->id) }}"><button
+                                                        type="button" class="btn btn-success btn-sm mt-1"><i
+                                                            class="fas fa-chart-line"></i></button></a>
+                                                <a href="{{ url('surat/surat-masuk/lembar-disposisi/' . $item->id) }}"
+                                                    title="Lihat File" target="_blank"><button
+                                                        class="btn btn-dark btn-sm mt-1"><i class="fas fa-clipboard"
+                                                            aria-hidden="true"></i></button></a>
+                                            @else
+                                                <a href="{{ url('surat/surat-masuk/' . $item->id . '/edit') }}"><button
+                                                        type="button" class="btn btn-warning btn-sm mt-1"><i
+                                                            class="fas fa-pencil-alt"></i></button></a>
+                                                <button type="button" class="btn btn-sm mt-1 btn-danger"
+                                                    data-toggle="modal" data-target="#hapus"
+                                                    onclick="hapus({{ $item->id }})"><i
+                                                        class="fas fa-trash"></i></button>
+                                                <a href="{{ url('surat/surat-masuk/' . $item->id) }}"><button
+                                                        type="button" class="btn btn-primary btn-sm mt-1"><i
+                                                            class="fas fa-eye"></i></button></a>
+                                                <a href="{{ url('surat/surat-masuk/diagram/' . $item->id) }}"><button
+                                                        type="button" class="btn btn-success btn-sm mt-1"><i
+                                                            class="fas fa-chart-line"></i></button></a>
                                             @endif
                                         </td>
                                     </tr>
@@ -98,7 +129,7 @@
                     <h5 class="modal-title" id="staticBackdropLabel">Arsipkan Surat</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
-                        </button>
+                    </button>
                 </div>
                 <div class="modal-body">
                     Apa Anda Yakin ingin Mengarsipkan Surat ini?
@@ -122,7 +153,7 @@
                     <h5 class="modal-title" id="staticBackdropLabel">Approve Surat</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
-                        </button>
+                    </button>
                 </div>
                 <div class="modal-body">
                     Apa Anda Yakin ingin Menyelesaikan Surat ini?
@@ -146,7 +177,7 @@
                     <h5 class="modal-title" id="staticBackdropLabel">Hapus Surat</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
-                        </button>
+                    </button>
                 </div>
                 <div class="modal-body">
                     Apa Anda Yakin ingin Menghapus Surat ini?
@@ -168,14 +199,16 @@
             let table = new DataTable('#tabel_surat');
 
             function arsip(id) {
-            $('#arsip_surat').attr('action', "{{ url('/surat/surat-masuk/arsip') }}" + "/" + id);
-        }
+                $('#arsip_surat').attr('action', "{{ url('/surat/surat-masuk/arsip') }}" + "/" + id);
+            }
+
             function selesai(id) {
-            $('#selesai_surat').attr('action', "{{ url('/surat/surat-masuk/selesai') }}" + "/" + id);
-        }
+                $('#selesai_surat').attr('action', "{{ url('/surat/surat-masuk/selesai') }}" + "/" + id);
+            }
+
             function hapus(id) {
-            $('#hapus_surat').attr('action', "{{ url('/surat/surat-masuk/') }}" + "/" + id);
-        }
+                $('#hapus_surat').attr('action', "{{ url('/surat/surat-masuk/') }}" + "/" + id);
+            }
         </script>
     @endpush
     @push('css')
