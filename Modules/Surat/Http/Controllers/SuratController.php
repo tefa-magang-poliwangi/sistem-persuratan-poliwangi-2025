@@ -253,7 +253,12 @@ class SuratController extends Controller
     }
     public function acc(Request $request, $id)
     {
+        
         $surat = SuratMasuk::findOrFail($id);
+
+        $request->validate([
+        'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // max 2MB
+        ]);
 
         $data = [
             'status' => 7,

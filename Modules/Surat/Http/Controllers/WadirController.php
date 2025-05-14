@@ -212,27 +212,33 @@ class WadirController extends Controller
      */
     public function acc(Request $request, $id)
     {
-        $surat = SuratMasuk::findOrFail($id);
+    $surat = SuratMasuk::findOrFail($id);
 
-        $data = [
-            'status' => 7,
+    // Validasi file
+    $request->validate([
+        'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // max 2MB
+    ]);
+
+    $data = [
+        'status' => 7,
+    ];
+
+    $surat->update($data);
+
+    if ($request->hasFile('foto')) {
+        $file = $request->file('foto');
+        $extension = $file->getClientOriginalExtension();
+        $file_name = Str::random(20) . '.' . $extension;
+        $file->storeAs('/assets/img/bukti', $file_name, 'public');
+
+        $bukti = [
+            'surat_id' => $surat->id,
+            'user_id' => auth()->user()->id,
+            'foto' => $file_name
         ];
+        BuktiTugas::create($bukti);
+    }
 
-        $surat->update($data);
-
-        if ($request->hasFile('foto')) {
-            $file = $request->file('foto');
-            $extension = $file->getClientOriginalExtension();
-            $file_name = Str::random(20) . '.' . $extension;
-            $file->storeAs('/assets/img/bukti', $file_name, 'public');
-
-            $bukti = [
-                'surat_id' => $surat->id,
-                'user_id' => auth()->user()->id,
-                'foto' => $file_name
-            ];
-            BuktiTugas::create($bukti);
-        }
-        return back();
+     return back();
     }
 }
