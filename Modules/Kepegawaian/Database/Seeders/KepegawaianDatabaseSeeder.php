@@ -33,7 +33,7 @@ class KepegawaianDatabaseSeeder extends Seeder
             [
                 "id"=> 2,
                 "nip"=> "195602221988111002",
-                "nama"=> "Wakil Direktur 1",
+                "nama"=> "Wakil Direktur Bidang Akademik",
                 "id_staff"=> 4,
                 "id_jurusan"=> 4,
                 "id_prodi"=> null,
@@ -45,7 +45,7 @@ class KepegawaianDatabaseSeeder extends Seeder
             [
                 "id"=> 3,
                 "nip"=> "195602221988111003",
-                "nama"=> "Wakil Direktur 2",
+                "nama"=> "Wakil Direktur Bidang Umum dan Keuangan",
                 "id_staff"=> 4,
                 "id_jurusan"=> 4,
                 "id_prodi"=> null,
@@ -57,7 +57,7 @@ class KepegawaianDatabaseSeeder extends Seeder
             [
                 "id"=> 4,
                 "nip"=> "195602221988111004",
-                "nama"=> "Wakil Direktur 3",
+                "nama"=> "Wakil Direktur Bidang Kemahasiswaan dan Alumni",
                 "id_staff"=> 4,
                 "id_jurusan"=> 4,
                 "id_prodi"=> null,
