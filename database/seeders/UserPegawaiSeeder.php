@@ -16,7 +16,7 @@ class UserPegawaiSeeder extends Seeder
     public function run(): void
     {
         // Generate all route permissions if needed
-        \Artisan::call('permission:create-permission-routes');
+        // \Artisan::call('permission:create-permission-routes');
 
         // Permissions umum
         $defaultPermissions = Permission::whereIn('name', [
@@ -59,27 +59,30 @@ class UserPegawaiSeeder extends Seeder
                 'username' => 'wadir3',
                 'password' => 'wadir3123',
                 'role' => 'wadir3',
-            ],[
-                'name' => 'Sekertaris',
+            ],
+            [
+                'name' => 'Sekretaris',
                 'nip' => '195602221988111005',
-                'email' => 'sekertaris@gamil.com',
-                'username' => 'sekertaris',
-                'password' => 'sekertaris123',
+                'email' => 'sekretaris@gamil.com',
+                'username' => 'sekretaris',
+                'password' => 'sekretaris123',
                 'role' => 'sekretaris',
-            ],[
+            ],
+            [
                 'name' => 'Ketua Jurusan Bisnis dan Informatika',
                 'nip' => '195602221988111006',
                 'email' => 'kbi@gmail.com',
                 'username' => 'kbi',
                 'password' => 'kbi12345',
-                'role' => 'unit',
-            ],[
+                'role' => 'pegawai',
+            ],
+            [
                 'name' => 'Ketua Jurusan Teknik Sipil',
                 'nip' => '195602221988111007',
                 'email' => 'kts@gmail.com',
                 'username' => 'kts',
                 'password' => 'kts12345',
-                'role' => 'unit',
+                'role' => 'pegawai',
             ]
         ];
 

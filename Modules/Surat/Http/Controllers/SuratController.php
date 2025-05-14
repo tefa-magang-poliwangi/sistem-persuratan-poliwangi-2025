@@ -22,13 +22,14 @@ class SuratController extends Controller
      */
     public function index()
     {
-        if (auth()->user()->getRolenames()[0] == "Pegawai") {
+        if (auth()->user()->getRolenames()[0] == "pegawai") {
             $jabatan = DB::table('users')
                 ->join('pegawai', 'users.id', '=', 'pegawai.user_id')
                 ->join('pejabats', 'pegawai.id', '=', 'pejabats.pegawai_id')
                 ->where('users.id', auth()->id())
                 ->select('pejabats.jabatan')
                 ->first();
+
             $surat_pegawai = DB::table('surat_disposisis')
                 ->join('surat_masuks', 'surat_disposisis.surat_masuk_id', '=', 'surat_masuks.id')
                 ->whereRaw('FIND_IN_SET(?, surat_disposisis.tujuan_disposisi)', $jabatan)
@@ -36,8 +37,9 @@ class SuratController extends Controller
                 ->select('surat_disposisis.*', 'surat_masuks.*')
                 ->orderBy('surat_masuks.created_at', 'DESC')
                 ->get();
+
             return view('surat::surat-pegawai.index', compact('surat_pegawai', 'jabatan'));
-        } elseif (auth()->user()->getRoleNames()[0] == "admin") {
+        } elseif (auth()->user()->getRoleNames()[0] == "admin" || auth()->user()->getRoleNames()[0] == "sekretaris") {
             $surat = SuratMasuk::whereIn('status', ['1', '2', '3', '4', '6', '7'])->orderBy('created_at', 'DESC')->get();
             return view('surat::surat.index', compact('surat'));
         }

@@ -2,11 +2,8 @@
 
 namespace Modules\Surat\Database\Seeders;
 
-use App\Models\Core\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -29,7 +26,7 @@ class UserModulSuratTableSeeder extends Seeder
         $roleWadir2 = Role::updateOrCreate(['name' => 'wadir2']);
         $roleWadir3 = Role::updateOrCreate(['name' => 'wadir3']);
         $sekretaris = Role::updateOrCreate(['name' => 'sekretaris']);
-        $unit = Role::updateOrCreate(['name' => 'unit']);
+        $pegawai = Role::updateOrCreate(['name' => 'pegawai']);
 
         $permissions = Permission::whereIn('name', [
             'adminlte.darkmode.toggle',
@@ -83,7 +80,9 @@ class UserModulSuratTableSeeder extends Seeder
             'wadir.detail',
         ])->pluck('id')->all();
 
-        $permissionsSekertaris = Permission::whereIn('name', [
+        $permissionsSekretaris = Permission::whereIn('name', [
+            'surat-masuk.index',
+            'arsip.index',
             'surat-masuk.diagram',
             'surat-masuk.arsip',
             'surat-masuk.selesai',
@@ -98,7 +97,6 @@ class UserModulSuratTableSeeder extends Seeder
         $roleWadir1->givePermissionTo($permissionsWadir);
         $roleWadir2->givePermissionTo($permissionsWadir);
         $roleWadir3->givePermissionTo($permissionsWadir);
-        $sekretaris->givePermissionTo($permissionsSekertaris);
-
+        $sekretaris->givePermissionTo($permissionsSekretaris);
     }
 }
