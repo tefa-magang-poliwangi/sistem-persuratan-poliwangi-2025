@@ -216,7 +216,11 @@ class WadirController extends Controller
 
     // Validasi file
     $request->validate([
-        'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // max 2MB
+        'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    ], [
+        'foto.image' => 'File yang dikirimkan harus berupa gambar.',
+        'foto.mimes' => 'Format gambar harus jpg, jpeg, atau png.',
+        'foto.max' => 'Ukuran gambar maksimal 2MB.',
     ]);
 
     $data = [
