@@ -59,7 +59,28 @@ class UserPegawaiSeeder extends Seeder
                 'username' => 'wadir3',
                 'password' => 'wadir3123',
                 'role' => 'wadir3',
-            ],
+            ],[
+                'name' => 'Sekertaris',
+                'nip' => '195602221988111005',
+                'email' => 'sekertaris@gamil.com',
+                'username' => 'sekertaris',
+                'password' => 'sekertaris123',
+                'role' => 'sekretaris',
+            ],[
+                'name' => 'Ketua Jurusan Bisnis dan Informatika',
+                'nip' => '195602221988111006',
+                'email' => 'kbi@gmail.com',
+                'username' => 'kbi',
+                'password' => 'kbi12345',
+                'role' => 'unit',
+            ],[
+                'name' => 'Ketua Jurusan Teknik Sipil',
+                'nip' => '195602221988111007',
+                'email' => 'kts@gmail.com',
+                'username' => 'kts',
+                'password' => 'kts12345',
+                'role' => 'unit',
+            ]
         ];
 
         foreach ($users as $data) {

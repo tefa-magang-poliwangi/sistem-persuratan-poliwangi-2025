@@ -12,6 +12,7 @@ use Modules\Surat\Entities\BuktiTugas;
 use Modules\Surat\Entities\SuratMasuk;
 use Modules\Surat\Entities\SuratDisposisi;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Facades\Validator;
 
 class SuratController extends Controller
 {

@@ -28,6 +28,8 @@ class UserModulSuratTableSeeder extends Seeder
         $roleWadir1 = Role::updateOrCreate(['name' => 'wadir1']);
         $roleWadir2 = Role::updateOrCreate(['name' => 'wadir2']);
         $roleWadir3 = Role::updateOrCreate(['name' => 'wadir3']);
+        $sekretaris = Role::updateOrCreate(['name' => 'sekretaris']);
+        $unit = Role::updateOrCreate(['name' => 'unit']);
 
         $permissions = Permission::whereIn('name', [
             'adminlte.darkmode.toggle',
@@ -81,6 +83,14 @@ class UserModulSuratTableSeeder extends Seeder
             'wadir.detail',
         ])->pluck('id')->all();
 
+        $permissionsSekertaris = Permission::whereIn('name', [
+            'surat-masuk.diagram',
+            'surat-masuk.arsip',
+            'surat-masuk.selesai',
+            'surat-masuk.detail',
+            'surat-masuk.acc',
+        ])->pluck('id')->all();
+
         // $pimpinan->assignRole($rolePimpinan);
         // $rolePimpinan->syncPermissions($permissions);
         $roleAdmin->givePermissionTo($permissionsAdmin);
@@ -88,5 +98,7 @@ class UserModulSuratTableSeeder extends Seeder
         $roleWadir1->givePermissionTo($permissionsWadir);
         $roleWadir2->givePermissionTo($permissionsWadir);
         $roleWadir3->givePermissionTo($permissionsWadir);
+        $sekretaris->givePermissionTo($permissionsSekertaris);
+
     }
 }
