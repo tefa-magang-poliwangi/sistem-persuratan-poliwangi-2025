@@ -18,12 +18,23 @@ class DisposisiSuratController extends Controller
      */
     public function index()
     {
-        $disposisi = SuratMasuk::where('status', '2')
-            ->orWhere('status', '3')
-            ->orWhere('status', '6')
-            ->orderBy('created_at', 'DESC')
-            ->get();
-        return view('surat::disposisi-surat.index', compact('disposisi'));
+        // mengambil user yang sedang login saat ini
+        $user = Auth()->user();
+
+        // dd($user->getRoleNames());
+
+        // hanya mengizinkan user dengan role pejabat: direktur
+        if ($user->getRoleNames()->contains('direktur')) {
+            $disposisi = SuratMasuk::where('status', '2')
+                ->orWhere('status', '3')
+                ->orWhere('status', '6')
+                ->orderBy('created_at', 'DESC')
+                ->get();
+
+            return view('surat::disposisi-surat.index', compact('disposisi'));
+        } else {
+            return redirect('/dashboard')->with('sukses', 'Pengguna tidak di-izinkan');
+        }
     }
 
     /**
@@ -48,15 +59,6 @@ class DisposisiSuratController extends Controller
         // pengecekan jika surat masuk adalah berjenis arsip, maka akan di redirect ke surat masuk index
         if ($surat->status === 5) {
             return redirect('/surat/disposisi-surat')->with('warning', 'surat masuk adalah arsip');
-        }
-
-        // mengecek jikalau surat masuk sudah dilakukan pengajuan diposisi maka tidak di izinkan untuk mengajukan disposisi lagi
-        if ($surat) {
-            $surat_disposisi = SuratDisposisi::where('surat_masuk_id', $surat->id)->first();
-
-            if ($surat_disposisi) {
-                return redirect('/surat/disposisi-surat')->with('warning', 'surat masuk sudah dilakukan disposisi');
-            }
         }
 
         $user = DB::table('pejabats')->select('pejabats.jabatan')->where('pejabats.jabatan', 'like', 'Wakil Direktur%')->get();
