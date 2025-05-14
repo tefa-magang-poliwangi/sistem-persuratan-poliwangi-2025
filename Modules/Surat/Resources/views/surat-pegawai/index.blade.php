@@ -31,7 +31,8 @@
                                             <td class="text-center">
                                                 {{ $loop->iteration }}
                                             </td>
-                                            <td><a href="javascript: void(0);" class="text-body fw-bold">{{ $item->nomor }}</a> </td>
+                                            <td><a href="javascript: void(0);"
+                                                    class="text-body fw-bold">{{ $item->nomor }}</a> </td>
                                             <td>
                                                 {{ date('d F Y', strtotime($item->tanggal_surat)) }}
                                             </td>
@@ -53,15 +54,22 @@
                                             </td>
                                             <td class="text-center">
                                                 @if ($item->status == 4)
-                                                <a href="{{ url('surat/surat-masuk/' . $item->id) }}"><button type="button" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></button></a>
-                                                <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#acc" onclick="acc({{ $item->id }})"><i class="fas fa-check"></i></button>
-                                                {{-- <a href="{{ url('surat/surat-masuk/lembar-disposisi/' . $item->id) }}" title="Lihat File" target="_blank"><button class="btn btn-primary btn-sm"><i class="fas fa-eye" aria-hidden="true"></i></button></a> --}}
+                                                    <a href="{{ url('surat/surat-masuk/' . $item->id) }}"><button
+                                                            type="button" class="btn btn-primary btn-sm"><i
+                                                                class="fas fa-pencil-alt"></i></button></a>
+                                                    <button type="button" class="btn btn-success btn-sm"
+                                                        data-toggle="modal" data-target="#acc"
+                                                        onclick="acc({{ $item->id }})"><i
+                                                            class="fas fa-check"></i></button>
+                                                    {{-- <a href="{{ url('surat/surat-masuk/lembar-disposisi/' . $item->id) }}" title="Lihat File" target="_blank"><button class="btn btn-primary btn-sm"><i class="fas fa-eye" aria-hidden="true"></i></button></a> --}}
                                                 @elseif ($item->status == 7)
-                                                <a href="{{ url('surat/surat-masuk/detail/' . $item->id) }}"><button class="btn btn-primary btn-sm"><i class="fas fa-eye" aria-hidden="true"></i></button></a>
-                                                {{-- <a href="{{ url('surat/surat-masuk/lembar-disposisi/' . $item->id) }}" title="Lihat File" target="_blank"><button class="btn btn-primary btn-sm"><i class="fas fa-eye" aria-hidden="true"></i></button></a> --}}
-                                                
+                                                    <a href="{{ url('surat/surat-masuk/detail/' . $item->id) }}"><button
+                                                            class="btn btn-primary btn-sm"><i class="fas fa-eye"
+                                                                aria-hidden="true"></i></button></a>
+                                                    {{-- <a href="{{ url('surat/surat-masuk/lembar-disposisi/' . $item->id) }}" title="Lihat File" target="_blank"><button class="btn btn-primary btn-sm"><i class="fas fa-eye" aria-hidden="true"></i></button></a> --}}
                                                 @endif
-                                            </td></td>
+                                            </td>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 @else
@@ -91,7 +99,8 @@
                         <div>
                             <div class="dropzone">
                                 <div class="fallback">
-                                    <label for="" style="font-weight: 500">Bukti Tugas <span style="font-weight: 800"> (*Opsional)</span></label>
+                                    <label for="" style="font-weight: 500">Bukti Tugas <span
+                                            style="font-weight: 800"> (*Opsional)</span></label>
                                     <input name="foto" type="file" class="form-control">
                                 </div>
                             </div>

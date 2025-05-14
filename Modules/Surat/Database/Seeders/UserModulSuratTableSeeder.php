@@ -90,6 +90,15 @@ class UserModulSuratTableSeeder extends Seeder
             'surat-masuk.acc',
         ])->pluck('id')->all();
 
+        $permissionsPegawai = Permission::whereIn('name', [
+            'surat-masuk.index',
+            'surat-masuk.detail',
+            'surat-masuk.acc',
+            'surat-masuk.disposisi',
+            'surat-masuk.diagram',
+            'surat-masuk.show',
+        ])->pluck('id')->all();
+
         // $pimpinan->assignRole($rolePimpinan);
         // $rolePimpinan->syncPermissions($permissions);
         $roleAdmin->givePermissionTo($permissionsAdmin);
@@ -98,5 +107,6 @@ class UserModulSuratTableSeeder extends Seeder
         $roleWadir2->givePermissionTo($permissionsWadir);
         $roleWadir3->givePermissionTo($permissionsWadir);
         $sekretaris->givePermissionTo($permissionsSekretaris);
+        $pegawai->givePermissionTo($permissionsPegawai);
     }
 }
