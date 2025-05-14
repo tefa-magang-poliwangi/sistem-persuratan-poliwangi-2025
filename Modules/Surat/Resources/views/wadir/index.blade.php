@@ -31,7 +31,8 @@
                                             <td class="text-center">
                                                 {{ $loop->iteration }}
                                             </td>
-                                            <td><a href="javascript: void(0);" class="text-body fw-bold">{{ $item->nomor }}</a> </td>
+                                            <td><a href="javascript: void(0);"
+                                                    class="text-body fw-bold">{{ $item->nomor }}</a> </td>
                                             <td>
                                                 {{ date('d F Y', strtotime($item->tanggal_surat)) }}
                                             </td>
@@ -50,24 +51,42 @@
                                                 @elseif ($item->status == 4)
                                                     <span class="badge bg-success font-size-11">Dikirim Ke Pegawai</span>
                                                 @elseif ($item->status == 6)
-                                                    <span class="badge bg-secondary font-size-11">Kembali ke Sekretaris</span>
+                                                    <span class="badge bg-secondary font-size-11">Kembali ke
+                                                        Sekretaris</span>
                                                 @elseif ($item->status == 7)
                                                     <span class="badge bg-dark font-size-11">Selesai</span>
                                                 @else
                                                     <span class="badge bg-secondary font-size-11">Arsip</span>
                                                 @endif
                                             </td>
-                                            <td class="text-center">@if ($item->status == '3')
-                                                    <a href="{{ url('surat/wadir/' . $item->id) }}"><button type="button" class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button></a>
-                                                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#acc" onclick="acc({{ $item->id }})"><i class="fas fa-check"></i></button>
+                                            <td class="text-center">
+                                                @if ($item->status == '3')
+                                                    <a href="{{ url('surat/wadir/' . $item->id) }}"><button type="button"
+                                                            class="btn btn-primary btn-sm"><i
+                                                                class="fas fa-eye"></i></button></a>
+                                                    <button type="button" class="btn btn-success btn-sm"
+                                                        data-toggle="modal" data-target="#acc"
+                                                        onclick="acc({{ $item->id }})">
+                                                        <i class="fas fa-check"></i>
+                                                    </button>
                                                 @elseif ($item->status == '4')
-                                                    <a href="{{ url('surat/wadir/' . $item->id . '/edit') }}"><button type="button" class="btn btn-warning btn-sm"><i class="fas fa-pencil-alt"></i></button></a>
-                                                    <a href="{{ url('surat/wadir/detail/' . $item->id) }}"><button type="button" class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button></a>
+                                                    <a href="{{ url('surat/wadir/' . $item->id . '/edit') }}"><button
+                                                            type="button" class="btn btn-warning btn-sm"><i
+                                                                class="fas fa-pencil-alt"></i></button></a>
+                                                    <a href="{{ url('surat/wadir/detail/' . $item->id) }}"><button
+                                                            type="button" class="btn btn-primary btn-sm"><i
+                                                                class="fas fa-eye"></i></button></a>
                                                 @elseif ($item->status == '6')
-                                                    <a href="{{ url('surat/wadir/' . $item->id . '/edit') }}"><button type="button" class="btn btn-warning btn-sm"><i class="fas fa-pencil-alt"></i></button></a>
-                                                    <a href="{{ url('surat/wadir/detail/' . $item->id) }}"><button type="button" class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button></a>
+                                                    <a href="{{ url('surat/wadir/' . $item->id . '/edit') }}"><button
+                                                            type="button" class="btn btn-warning btn-sm"><i
+                                                                class="fas fa-pencil-alt"></i></button></a>
+                                                    <a href="{{ url('surat/wadir/detail/' . $item->id) }}"><button
+                                                            type="button" class="btn btn-primary btn-sm"><i
+                                                                class="fas fa-eye"></i></button></a>
                                                 @elseif ($item->status == '7')
-                                                    <a href="{{ url('surat/wadir/detail/' . $item->id) }}"><button type="button" class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button></a>
+                                                    <a href="{{ url('surat/wadir/detail/' . $item->id) }}"><button
+                                                            type="button" class="btn btn-primary btn-sm"><i
+                                                                class="fas fa-eye"></i></button></a>
                                                 @endif
                                             </td>
                                         </tr>
@@ -102,9 +121,16 @@
                         <div>
                             <div class="dropzone">
                                 <div class="fallback">
-                                    <label for="" style="font-weight: 500">Bukti Tugas <span style="font-weight: 800"> (*Opsional)</span></label>
-                                    <input name="foto" type="file" class="form-control">
+                                    <label for="foto" style="font-weight: 500">Bukti Tugas (foto/gambar)
+                                        <span style="font-weight: 800" class="text-primary"> (*Opsional)</span>
+                                    </label>
+                                    <input name="foto" id="foto" type="file" class="form-control">
                                 </div>
+                                @if ($errors->has('foto'))
+                                    <div style="width:auto; color:#dc4c64; margin-top:0.25rem;">
+                                        {{ $errors->first('foto') }}
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -120,7 +146,7 @@
         <script>
             let table = new DataTable('#tabel_surat');
 
-            function acc(id){
+            function acc(id) {
                 $('#acc_surat').attr('action', "{{ url('/surat/wadir/acc') }}" + "/" + id);
             }
         </script>

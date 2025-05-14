@@ -253,15 +253,15 @@ class SuratController extends Controller
     }
     public function acc(Request $request, $id)
     {
-        
+
         $surat = SuratMasuk::findOrFail($id);
 
         $request->validate([
-        'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ], [
-        'foto.image' => 'File yang dikirimkan harus berupa gambar.',
-        'foto.mimes' => 'Format gambar harus jpg, jpeg, atau png.',
-        'foto.max' => 'Ukuran gambar maksimal 2MB.',
+            'foto.image' => 'File yang dikirimkan harus berupa gambar.',
+            'foto.mimes' => 'Format gambar harus jpg, jpeg, atau png.',
+            'foto.max' => 'Ukuran gambar maksimal 2MB.',
         ]);
 
         $data = [
@@ -312,8 +312,8 @@ class SuratController extends Controller
 
         foreach ($disposisi as $item) {
             $jabatan = DB::table('users')
-                ->join('pegawai', 'users.id', '=', 'pegawai.user_id')
-                ->join('pejabats', 'pegawai.id', '=', 'pejabats.pegawai_id')
+                ->join('pegawais', 'users.nip', '=', 'pegawais.nip')
+                ->join('pejabats', 'pegawais.id', '=', 'pejabats.pegawai_id')
                 ->where('users.id', $item->user_id)
                 ->select('pejabats.jabatan')
                 ->first();

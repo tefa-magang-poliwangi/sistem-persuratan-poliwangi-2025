@@ -26,9 +26,8 @@ class WadirController extends Controller
 
         // dd($user->getRoleNames());
 
-        // hanya mengizinkan user dengan role pejabat: direktur, wadir1, wadir2, wadir3
+        // hanya mengizinkan user dengan role pejabat: wadir1, wadir2, wadir3
         if (
-            $user->getRoleNames()->contains('direktur') ||
             $user->getRoleNames()->contains('wadir1') ||
             $user->getRoleNames()->contains('wadir2') ||
             $user->getRoleNames()->contains('wadir3')
@@ -43,18 +42,27 @@ class WadirController extends Controller
 
             // dd($jabatan);
 
-            // $surat = null;
+            // $surat = DB::table('surat_disposisis')
+            //     ->join('surat_masuks', 'surat_disposisis.surat_masuk_id', '=', 'surat_masuks.id')
+            //     ->whereRaw('FIND_IN_SET(?, surat_disposisis.tujuan_disposisi)', [$jabatan->jabatan])
+            //     ->whereIn('surat_masuks.status', ['3', '4', '6', '7'])
+            //     ->select('surat_disposisis.*', 'surat_masuks.*')
+            //     ->orderBy('surat_masuks.created_at', 'DESC')
+            //     ->get();
 
-            $surat = DB::table('surat_disposisis')
-                ->join('surat_masuks', 'surat_disposisis.surat_masuk_id', '=', 'surat_masuks.id')
-                ->whereRaw('FIND_IN_SET(?, surat_disposisis.tujuan_disposisi)', [$jabatan->jabatan])
-                ->whereIn('surat_masuks.status', ['3', '4', '6', '7'])
-                ->select('surat_disposisis.*', 'surat_masuks.*')
-                ->orderBy('surat_masuks.created_at', 'DESC')
+            $latestDisposisis = DB::table('surat_disposisis as sd1')
+                ->join('surat_masuks as sm', 'sd1.surat_masuk_id', '=', 'sm.id')
+                ->whereRaw('FIND_IN_SET(?, sd1.tujuan_disposisi)', [$jabatan->jabatan])
+                ->whereIn('sm.status', ['3', '4', '6', '7'])
+                ->whereRaw('sd1.created_at = (SELECT MAX(sd2.created_at) FROM surat_disposisis sd2 WHERE sd2.surat_masuk_id = sd1.surat_masuk_id)')
+                ->select('sd1.*', 'sm.*')
+                ->orderBy('sm.created_at', 'DESC')
                 ->get();
 
+            // dd($latestDisposisis);
+
             $data = [
-                'surat' => $surat
+                'surat' => $latestDisposisis
             ];
 
             return view('surat::wadir.index', $data);
@@ -212,37 +220,37 @@ class WadirController extends Controller
      */
     public function acc(Request $request, $id)
     {
-    $surat = SuratMasuk::findOrFail($id);
+        $surat = SuratMasuk::findOrFail($id);
 
-    // Validasi file
-    $request->validate([
-        'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-    ], [
-        'foto.image' => 'File yang dikirimkan harus berupa gambar.',
-        'foto.mimes' => 'Format gambar harus jpg, jpeg, atau png.',
-        'foto.max' => 'Ukuran gambar maksimal 2MB.',
-    ]);
+        // Validasi file
+        $request->validate([
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ], [
+            'foto.image' => 'File yang dikirimkan harus berupa gambar.',
+            'foto.mimes' => 'Format gambar harus jpg, jpeg, atau png.',
+            'foto.max' => 'Ukuran gambar maksimal 2MB.',
+        ]);
 
-    $data = [
-        'status' => 7,
-    ];
-
-    $surat->update($data);
-
-    if ($request->hasFile('foto')) {
-        $file = $request->file('foto');
-        $extension = $file->getClientOriginalExtension();
-        $file_name = Str::random(20) . '.' . $extension;
-        $file->storeAs('/assets/img/bukti', $file_name, 'public');
-
-        $bukti = [
-            'surat_id' => $surat->id,
-            'user_id' => auth()->user()->id,
-            'foto' => $file_name
+        $data = [
+            'status' => 7,
         ];
-        BuktiTugas::create($bukti);
-    }
 
-     return back();
+        $surat->update($data);
+
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            $extension = $file->getClientOriginalExtension();
+            $file_name = Str::random(20) . '.' . $extension;
+            $file->storeAs('/assets/img/bukti', $file_name, 'public');
+
+            $bukti = [
+                'surat_id' => $surat->id,
+                'user_id' => auth()->user()->id,
+                'foto' => $file_name
+            ];
+            BuktiTugas::create($bukti);
+        }
+
+        return back();
     }
 }
