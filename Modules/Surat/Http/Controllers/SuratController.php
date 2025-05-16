@@ -24,8 +24,8 @@ class SuratController extends Controller
     {
         if (auth()->user()->getRolenames()[0] == "pegawai") {
             $jabatan = DB::table('users')
-                ->join('pegawai', 'users.id', '=', 'pegawai.user_id')
-                ->join('pejabats', 'pegawai.id', '=', 'pejabats.pegawai_id')
+                ->join('pegawais', 'users.nip', '=', 'pegawais.nip')
+                ->join('pejabats', 'pegawais.id', '=', 'pejabats.pegawai_id')
                 ->where('users.id', auth()->id())
                 ->select('pejabats.jabatan')
                 ->first();
@@ -108,11 +108,11 @@ class SuratController extends Controller
 
     public function show($id)
     {
-        if (auth()->user()->getRolenames()[0] == "admin") {
+        if (auth()->user()->getRolenames()[0] == "admin" || auth()->user()->getRolenames()[0] == "sekretaris") {
             $surat = SuratMasuk::findOrFail($id);
             $disposisi = SuratDisposisi::where('surat_masuk_id', $id)->get();
             return view('surat::surat.show', compact('surat', 'disposisi'));
-        } elseif (auth()->user()->getRolenames()[0] == "Pegawai") {
+        } elseif (auth()->user()->getRolenames()[0] == "pegawai") {
             $surat = SuratMasuk::findOrFail($id);
             $user = DB::table('pejabats')
                 ->select('pejabats.jabatan')
@@ -122,8 +122,8 @@ class SuratController extends Controller
                 })->get();
             $disposisi = SuratDisposisi::where('surat_masuk_id', $id)->orderBy('created_at', 'desc')->first();
             $user_disposisi = DB::table('users')
-                ->join('pegawai', 'users.id', '=', 'pegawai.user_id')
-                ->join('pejabats', 'pegawai.id', '=', 'pejabats.pegawai_id')
+                ->join('pegawais', 'users.nip', '=', 'pegawais.nip')
+                ->join('pejabats', 'pegawais.id', '=', 'pejabats.pegawai_id')
                 ->where('users.id', $disposisi->user_id)
                 ->select('pejabats.jabatan')
                 ->first();

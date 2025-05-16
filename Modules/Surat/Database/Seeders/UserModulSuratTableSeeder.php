@@ -96,6 +96,12 @@ class UserModulSuratTableSeeder extends Seeder
             'surat-masuk.lembar-disposisi',
             'surat-masuk.acc',
             'arsip.index',
+            'arsip.create',
+            'arsip.store',
+            'arsip.show',
+            'arsip.edit',
+            'arsip.update',
+            'arsip.destroy'
         ])->pluck('id')->all();
 
         $permissionsPegawai = Permission::whereIn('name', [
