@@ -58,6 +58,10 @@
                                                     <a href="{{ url('surat/surat-masuk/' . $item->id) }}"><button
                                                             type="button" class="btn btn-primary btn-sm"><i
                                                                 class="fas fa-pencil-alt"></i></button></a>
+                                                    @else
+                                                    <a href="{{ url('surat/surat-masuk/detail/' . $item->id) }}"><button
+                                                            class="btn btn-primary btn-sm"><i class="fas fa-eye"
+                                                                aria-hidden="true"></i></button></a>
                                                     @endif
                                                     <button type="button" class="btn btn-success btn-sm"
                                                         data-toggle="modal" data-target="#acc"
