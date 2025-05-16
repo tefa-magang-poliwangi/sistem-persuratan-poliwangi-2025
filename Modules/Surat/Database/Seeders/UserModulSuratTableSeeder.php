@@ -82,17 +82,26 @@ class UserModulSuratTableSeeder extends Seeder
 
         $permissionsSekretaris = Permission::whereIn('name', [
             'surat-masuk.index',
-            'arsip.index',
+            'surat-masuk.create',
+            'surat-masuk.store',
+            'surat-masuk.show',
+            'surat-masuk.disposisi',
             'surat-masuk.diagram',
             'surat-masuk.arsip',
             'surat-masuk.selesai',
+            'surat-masuk.edit',
+            'surat-masuk.update',
             'surat-masuk.detail',
+            'surat-masuk.destroy',
+            'surat-masuk.lembar-disposisi',
             'surat-masuk.acc',
+            'arsip.index',
         ])->pluck('id')->all();
 
         $permissionsPegawai = Permission::whereIn('name', [
             'surat-masuk.index',
             'surat-masuk.detail',
+            'surat-masuk.selesai',
             'surat-masuk.acc',
             'surat-masuk.disposisi',
             'surat-masuk.diagram',
