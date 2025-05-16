@@ -22,6 +22,7 @@ class SuratController extends Controller
      */
     public function index()
     {
+        
         if (auth()->user()->getRolenames()[0] == "pegawai") {
             $jabatan = DB::table('users')
                 ->join('pegawais', 'users.nip', '=', 'pegawais.nip')
