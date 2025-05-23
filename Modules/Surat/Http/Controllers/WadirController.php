@@ -226,8 +226,8 @@ class WadirController extends Controller
         // Validasi file
         $rules = ['foto' => config('custom.validasi_file_rules')]; // langsung dari .env
         $messages = config('custom.validasi_file_messages'); // dari config/custom.php
-        
-         $request->validate($rules, $messages);
+
+        $request->validate($rules, $messages);
 
         $data = [
             'status' => 7,

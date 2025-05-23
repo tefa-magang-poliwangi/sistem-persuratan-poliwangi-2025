@@ -257,13 +257,12 @@ class SuratController extends Controller
     }
     public function acc(Request $request, $id)
     {
-
         $surat = SuratMasuk::findOrFail($id);
 
-            $rules = ['foto' => config('custom.validasi_file_rules')]; // langsung dari .env
-            $messages = config('custom.validasi_file_messages'); // dari config/custom.php
-    
-            $request->validate($rules, $messages);
+        $rules = ['foto' => config('custom.validasi_file_rules')]; // langsung dari .env
+        $messages = config('custom.validasi_file_messages'); // dari config/custom.php
+
+        $request->validate($rules, $messages);
 
         $data = [
             'status' => 7,
