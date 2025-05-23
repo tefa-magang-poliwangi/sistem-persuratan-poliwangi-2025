@@ -108,6 +108,11 @@
                                     <label for="" style="font-weight: 500">Bukti Tugas <span
                                             style="font-weight: 800"> (*Opsional)</span></label>
                                     <input name="foto" type="file" class="form-control">
+                                    @if ($errors->has('foto'))
+                                    <div style="width:auto; color:#dc4c64; margin-top:0.25rem;">
+                                        {{ $errors->first('foto') }}
+                                    </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>

@@ -224,13 +224,10 @@ class WadirController extends Controller
         $surat = SuratMasuk::findOrFail($id);
 
         // Validasi file
-        $request->validate([
-            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ], [
-            'foto.image' => 'File yang dikirimkan harus berupa gambar.',
-            'foto.mimes' => 'Format gambar harus jpg, jpeg, atau png.',
-            'foto.max' => 'Ukuran gambar maksimal 2MB.',
-        ]);
+        $rules = ['foto' => config('custom.validasi_file_rules')]; // langsung dari .env
+        $messages = config('custom.validasi_file_messages'); // dari config/custom.php
+        
+         $request->validate($rules, $messages);
 
         $data = [
             'status' => 7,
