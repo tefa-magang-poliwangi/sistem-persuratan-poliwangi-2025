@@ -19,6 +19,7 @@ class CreateSuratDisposisisTable extends Migration
             $table->unsignedBigInteger('user_id')->nullable();
             $table->bigInteger('induk');
             $table->dateTime('waktu');
+            $table->boolean('status')->default(0); // 0 : untuk surat disposisi yg belum di selesaikan, 1 : untuk surat disposisi yang berhasil di selesaikan
             $table->char('disposisi_singkat', 100)->nullable();
             $table->text('disposisi_narasi')->nullable();
             $table->string('tujuan_disposisi')->nullable();

@@ -61,12 +61,12 @@ class UserPegawaiSeeder extends Seeder
                 'role' => 'wadir3',
             ],
             [
-                'name' => 'Sekretaris',
+                'name' => 'Sekdir',
                 'nip' => '195602221988111005',
-                'email' => 'sekretaris@gamil.com',
-                'username' => 'sekretaris',
-                'password' => 'sekretaris123',
-                'role' => 'sekretaris',
+                'email' => 'sekdir@gamil.com',
+                'username' => 'sekdir',
+                'password' => 'sekdir123',
+                'role' => 'sekdir',
             ],
             [
                 'name' => 'Ketua Jurusan Bisnis dan Informatika',
