@@ -35,7 +35,7 @@ class WadirController extends Controller
         ) {
             // get data jabatan berdasarkan user pegawai
             $jabatan = DB::table('users')
-                ->join('pegawais', 'users.nip', '=', 'pegawais.nip') // diubah
+                ->join('pegawais', 'users.username', '=', 'pegawais.username') // diubah
                 ->join('pejabats', 'pegawais.id', '=', 'pejabats.pegawai_id')
                 ->where('users.id', auth()->id())
                 ->select('pejabats.jabatan')
@@ -156,7 +156,7 @@ class WadirController extends Controller
     public function update(Request $request, $id)
     {
         $surat_masuk = SuratMasuk::findOrFail($id);
-        if ($request->disposisi == ['Sekretaris']) {
+        if ($request->disposisi == ['Sekdir']) {
             $data = [
                 'disposisi' => implode(',', $request->disposisi),
                 'status' => 6,
@@ -199,7 +199,7 @@ class WadirController extends Controller
         ];
         $disposisi_edit->update($disposisi);
         $surat = SuratMasuk::where('id', $disposisi_edit->surat_masuk_id)->firstOrFail();
-        if ($request->tujuan_disposisi == ['Sekretaris']) {
+        if ($request->tujuan_disposisi == ['Sekdir']) {
             $data = [
                 'disposisi' => implode(',', $request->tujuan_disposisi),
                 'status' => 6

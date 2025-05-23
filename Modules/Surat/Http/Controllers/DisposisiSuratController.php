@@ -93,7 +93,7 @@ class DisposisiSuratController extends Controller
         ];
         $disposisi_edit->update($disposisi);
         $surat = SuratMasuk::where('id', $disposisi_edit->surat_masuk_id)->firstOrFail();
-        if ($request->tujuan_disposisi == 'Sekretaris') {
+        if ($request->tujuan_disposisi == 'Sekdir') {
             $data = [
                 'disposisi' => $request->tujuan_disposisi,
                 'status' => 6,
@@ -111,7 +111,7 @@ class DisposisiSuratController extends Controller
     public function update(Request $request, $id)
     {
         $surat_masuk = SuratMasuk::findOrFail($id);
-        if ($request->disposisi == 'Sekretaris') {
+        if ($request->disposisi == 'Sekdir') {
             $data = [
                 'disposisi' => $request->disposisi,
                 'status' => 6,

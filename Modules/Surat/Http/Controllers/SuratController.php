@@ -22,10 +22,10 @@ class SuratController extends Controller
      */
     public function index()
     {
-        
+
         if (auth()->user()->getRolenames()[0] == "pegawai") {
             $jabatan = DB::table('users')
-                ->join('pegawais', 'users.nip', '=', 'pegawais.nip')
+                ->join('pegawais', 'users.username', '=', 'pegawais.username')
                 ->join('pejabats', 'pegawais.id', '=', 'pejabats.pegawai_id')
                 ->where('users.id', auth()->id())
                 ->select('pejabats.jabatan')
@@ -40,7 +40,7 @@ class SuratController extends Controller
                 ->get();
 
             return view('surat::surat-pegawai.index', compact('surat_pegawai', 'jabatan'));
-        } elseif (auth()->user()->getRoleNames()[0] == "admin" || auth()->user()->getRoleNames()[0] == "sekretaris") {
+        } elseif (auth()->user()->getRoleNames()[0] == "admin" || auth()->user()->getRoleNames()[0] == "sekdir") {
             $surat = SuratMasuk::whereIn('status', ['1', '2', '3', '4', '6', '7'])->orderBy('created_at', 'DESC')->get();
             return view('surat::surat.index', compact('surat'));
         }
@@ -109,7 +109,7 @@ class SuratController extends Controller
 
     public function show($id)
     {
-        if (auth()->user()->getRolenames()[0] == "admin" || auth()->user()->getRolenames()[0] == "sekretaris") {
+        if (auth()->user()->getRolenames()[0] == "admin" || auth()->user()->getRolenames()[0] == "sekdir") {
             $surat = SuratMasuk::findOrFail($id);
             $disposisi = SuratDisposisi::where('surat_masuk_id', $id)->get();
             return view('surat::surat.show', compact('surat', 'disposisi'));
@@ -123,7 +123,7 @@ class SuratController extends Controller
                 })->get();
             $disposisi = SuratDisposisi::where('surat_masuk_id', $id)->orderBy('created_at', 'desc')->first();
             $user_disposisi = DB::table('users')
-                ->join('pegawais', 'users.nip', '=', 'pegawais.nip')
+                ->join('pegawais', 'users.username', '=', 'pegawais.username')
                 ->join('pejabats', 'pegawais.id', '=', 'pejabats.pegawai_id')
                 ->where('users.id', $disposisi->user_id)
                 ->select('pejabats.jabatan')
@@ -232,7 +232,7 @@ class SuratController extends Controller
     public function disposisiSurat(Request $request, $id)
     {
         $surat_masuk = SuratMasuk::findOrFail($id);
-        if ($request->disposisi == ['Sekretaris']) {
+        if ($request->disposisi == ['Sekdir']) {
             $data = [
                 'disposisi' => implode(',', $request->disposisi),
                 'status' => 6,
@@ -311,12 +311,12 @@ class SuratController extends Controller
             'key' => 'Direktur',
             'name' => 'Direktur',
             'status' => 'king',
-            'parent' => 'Sekretaris'
+            'parent' => 'Sekdir'
         ];
 
         foreach ($disposisi as $item) {
             $jabatan = DB::table('users')
-                ->join('pegawais', 'users.nip', '=', 'pegawais.nip')
+                ->join('pegawais', 'users.username', '=', 'pegawais.username')
                 ->join('pejabats', 'pegawais.id', '=', 'pejabats.pegawai_id')
                 ->where('users.id', $item->user_id)
                 ->select('pejabats.jabatan')
@@ -356,7 +356,7 @@ class SuratController extends Controller
                 'key' => 'Direktur',
                 'name' => 'Direktur',
                 'status' => 'king',
-                'parent' => 'Sekretaris'
+                'parent' => 'Sekdir'
             ];
         }
 
