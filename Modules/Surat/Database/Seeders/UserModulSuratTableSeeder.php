@@ -25,7 +25,7 @@ class UserModulSuratTableSeeder extends Seeder
         $roleWadir1 = Role::updateOrCreate(['name' => 'wadir1']);
         $roleWadir2 = Role::updateOrCreate(['name' => 'wadir2']);
         $roleWadir3 = Role::updateOrCreate(['name' => 'wadir3']);
-        $sekretaris = Role::updateOrCreate(['name' => 'sekretaris']);
+        $sekdir = Role::updateOrCreate(['name' => 'sekdir']);
         $pegawai = Role::updateOrCreate(['name' => 'pegawai']);
 
         $permissions = Permission::whereIn('name', [
@@ -80,7 +80,7 @@ class UserModulSuratTableSeeder extends Seeder
             'wadir.detail',
         ])->pluck('id')->all();
 
-        $permissionsSekretaris = Permission::whereIn('name', [
+        $permissionsSekdir = Permission::whereIn('name', [
             'surat-masuk.index',
             'surat-masuk.create',
             'surat-masuk.store',
@@ -121,7 +121,7 @@ class UserModulSuratTableSeeder extends Seeder
         $roleWadir1->givePermissionTo($permissionsWadir);
         $roleWadir2->givePermissionTo($permissionsWadir);
         $roleWadir3->givePermissionTo($permissionsWadir);
-        $sekretaris->givePermissionTo($permissionsSekretaris);
+        $sekdir->givePermissionTo($permissionsSekdir);
         $pegawai->givePermissionTo($permissionsPegawai);
     }
 }

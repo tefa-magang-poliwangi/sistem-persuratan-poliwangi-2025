@@ -68,14 +68,14 @@ class KepegawaianDatabaseSeeder extends Seeder
             ],[
                 "id"=> 5,
                 "nip"=> "195602221988111005",
-                "nama"=> "Sekertaris",
+                "nama"=> "Sekdir",
                 "id_staff"=> 4,
                 "id_jurusan"=> 4,
                 "id_prodi"=> null,
                 "jenis_kelamin"=> "L",
                 "gelar_dpn"=> null,
                 "gelar_blk"=> null,
-                "username"=> "sekertaris"
+                "username"=> "sekdir"
             ],[
                 "id"=> 6,
                 "nip"=> "195602221988111006",
