@@ -55,13 +55,13 @@
                                             <td class="text-center">
                                                 @if ($item->status == 4)
                                                     @if (!auth()->user()->hasRole('pegawai'))
-                                                    <a href="{{ url('surat/surat-masuk/' . $item->id) }}"><button
-                                                            type="button" class="btn btn-primary btn-sm"><i
-                                                                class="fas fa-pencil-alt"></i></button></a>
+                                                        <a href="{{ url('surat/surat-masuk/' . $item->id) }}"><button
+                                                                type="button" class="btn btn-primary btn-sm"><i
+                                                                    class="fas fa-pencil-alt"></i></button></a>
                                                     @else
-                                                    <a href="{{ url('surat/surat-masuk/detail/' . $item->id) }}"><button
-                                                            class="btn btn-primary btn-sm"><i class="fas fa-eye"
-                                                                aria-hidden="true"></i></button></a>
+                                                        <a href="{{ url('surat/surat-masuk/detail/' . $item->id) }}"><button
+                                                                class="btn btn-primary btn-sm"><i class="fas fa-eye"
+                                                                    aria-hidden="true"></i></button></a>
                                                     @endif
                                                     <button type="button" class="btn btn-success btn-sm"
                                                         data-toggle="modal" data-target="#acc"
@@ -105,13 +105,14 @@
                         <div>
                             <div class="dropzone">
                                 <div class="fallback">
-                                    <label for="" style="font-weight: 500">Bukti Tugas <span
-                                            style="font-weight: 800"> (*Opsional)</span></label>
+                                    <label for="" style="font-weight: 500">Bukti Tugas (pdf)
+                                        <span style="font-weight: 800" class="text-primary"> (*Opsional)</span>
+                                    </label>
                                     <input name="foto" type="file" class="form-control">
                                     @if ($errors->has('foto'))
-                                    <div style="width:auto; color:#dc4c64; margin-top:0.25rem;">
-                                        {{ $errors->first('foto') }}
-                                    </div>
+                                        <div style="width:auto; color:#dc4c64; margin-top:0.25rem;">
+                                            {{ $errors->first('foto') }}
+                                        </div>
                                     @endif
                                 </div>
                             </div>

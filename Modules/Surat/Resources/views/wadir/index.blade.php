@@ -121,7 +121,7 @@
                         <div>
                             <div class="dropzone">
                                 <div class="fallback">
-                                    <label for="foto" style="font-weight: 500">Bukti Tugas (foto/gambar)
+                                    <label for="foto" style="font-weight: 500">Bukti Tugas (pdf)
                                         <span style="font-weight: 800" class="text-primary"> (*Opsional)</span>
                                     </label>
                                     <input name="foto" id="foto" type="file" class="form-control">
