@@ -12,6 +12,7 @@ use Modules\Surat\Entities\BuktiTugas;
 use Modules\Surat\Entities\SuratMasuk;
 use Modules\Surat\Entities\SuratDisposisi;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class SuratController extends Controller
@@ -33,9 +34,13 @@ class SuratController extends Controller
 
             $surat_pegawai = DB::table('surat_disposisis')
                 ->join('surat_masuks', 'surat_disposisis.surat_masuk_id', '=', 'surat_masuks.id')
-                ->whereRaw('FIND_IN_SET(?, surat_disposisis.tujuan_disposisi)', $jabatan)
+                ->whereRaw('FIND_IN_SET(?, surat_disposisis.tujuan_disposisi)', [$jabatan->jabatan])
                 ->whereIn('surat_masuks.status', ['4', '7'])
-                ->select('surat_disposisis.*', 'surat_masuks.*')
+                ->select(
+                    'surat_disposisis.id as disposisi_id',
+                    'surat_disposisis.status as status_disposisi',
+                    'surat_masuks.*'
+                )
                 ->orderBy('surat_masuks.created_at', 'DESC')
                 ->get();
 
@@ -269,22 +274,43 @@ class SuratController extends Controller
     public function acc(Request $request, $id)
     {
         $surat = SuratMasuk::findOrFail($id);
-        $suratDisposisis = SuratDisposisi::where('surat_masuk_id', $id)->get();
+        // Ambil jabatan user yang login
+        $jabatan = DB::table('users')
+            ->join('pegawais', 'users.username', '=', 'pegawais.username')
+            ->join('pejabats', 'pegawais.id', '=', 'pejabats.pegawai_id')
+            ->where('users.id', auth()->id())
+            ->select('pejabats.jabatan')
+            ->first();
+
+        if (!$jabatan) {
+            return back()->with('error', 'Jabatan tidak ditemukan.');
+        }
+        // Ambil surat disposisi yang tujuan_disposisi-nya mengandung jabatan user
+        $suratDisposisis = DB::table('surat_disposisis')
+            ->where('surat_masuk_id', $id)
+            ->whereRaw('FIND_IN_SET(?, tujuan_disposisi)', [$jabatan->jabatan])
+            ->get();
+
+        // Tampilkan untuk debug
+        // dd($suratDisposisis);
 
         $rules = ['foto' => config('custom.validasi_file_rules')]; // langsung dari .env
         $messages = config('custom.validasi_file_messages'); // dari config/custom.php
 
         $request->validate($rules, $messages);
 
-        $data = [
-            'status' => 7,
-        ];
-
-        $surat->update($data);
-
         // update status milik data surat disposisi (agar menjadi 1) yang berkaitan dengan surat masuk
-        foreach ($suratDisposisis as $disposisi) {
-            $disposisi->update(['status' => 1]);
+        SuratDisposisi::where('surat_masuk_id', $id)
+        ->whereRaw('FIND_IN_SET(?, tujuan_disposisi)', [$jabatan->jabatan])
+        ->update(['status' => 1]);
+
+        // ✅ Step 2: Cek apakah semua disposisi dengan surat_masuk_id sama sudah status = 1
+        $jumlah_disposisi = SuratDisposisi::where('surat_masuk_id', $id)->count();
+        $jumlah_selesai = SuratDisposisi::where('surat_masuk_id', $id)->where('status', 1)->count();
+
+        // ✅ Step 3: Kalau semua status = 1, update status surat
+        if ($jumlah_disposisi > 0 && $jumlah_disposisi == $jumlah_selesai) {
+            $surat->update(['status' => 7]);
         }
 
         if ($request->hasFile('foto')) {
