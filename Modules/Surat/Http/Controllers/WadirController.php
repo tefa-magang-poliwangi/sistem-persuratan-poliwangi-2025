@@ -153,16 +153,16 @@ class WadirController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function update(Request $request, $id) 
+    public function update(Request $request, $id)
     {
         $surat_masuk = SuratMasuk::findOrFail($id);
 
         // Filter tujuan disposisi agar tidak ada null atau kosong
-        $tujuan_disposisi = array_filter($request->tujuan_disposisi, function($value) {
+        $tujuan_disposisi = array_filter($request->tujuan_disposisi, function ($value) {
             return !is_null($value) && $value !== '';
         });
-        $tujuan_disposisi = array_values($tujuan_disposisi); // reset index
 
+        $tujuan_disposisi = array_values($tujuan_disposisi); // reset index
         $jumlah_tujuan = count($tujuan_disposisi);
 
         // Contoh logika status sederhana (bisa disesuaikan)
@@ -171,11 +171,13 @@ class WadirController extends Controller
         } elseif ($jumlah_tujuan === 1 && $tujuan_disposisi[0] === 'Direktur') {
             $data = ['disposisi' => $jumlah_tujuan, 'status' => 2];
         } else {
-            $data = ['disposisi' => $jumlah_tujuan, 'status' => 4];
+            $data = ['disposisi' => 'Surat Dikirim ke Pegawai', 'status' => 4];
         }
 
         $surat_masuk->update($data);
 
+        // Cek status disposisi: jika surat status 4, maka status disposisi = 0
+        $status_disposisi = $data['status'] === 4 ? 0 : 1;
 
         // Proses buat disposisi
         foreach ($tujuan_disposisi as $tujuan) {
@@ -185,6 +187,7 @@ class WadirController extends Controller
                 'tujuan_disposisi' => $tujuan,
                 'induk' => $request->induk,
                 'waktu' => $request->waktu,
+                'status' => $status_disposisi,
                 'disposisi_singkat' => $request->disposisi_singkat,
                 'disposisi_narasi' => $request->disposisi_narasi,
             ]);
@@ -192,7 +195,7 @@ class WadirController extends Controller
 
         return redirect('/surat/wadir')->with('sukses', 'Berhasil Tambah Disposisi Surat');
     }
-    
+
     public function updateDisposisi(Request $request, $id)
     {
         $disposisi_edit = SuratDisposisi::findOrFail($id);
