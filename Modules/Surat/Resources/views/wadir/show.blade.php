@@ -102,7 +102,7 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="disposisi">Tujuan Disposisi <span class="text-danger fw-bold">*</span></label>
-                                <select name="disposisi[]" class="form-control select2" id="disposisi" multiple="multiple"
+                                <select name="tujuan_disposisi[]" class="form-control select2" id="disposisi" multiple="multiple"
                                     required>
                                     <option value="Sekdir">Kembali Ke Sekdir</option>
                                     <option value="Direktur">Kembali Ke Direktur</option>
