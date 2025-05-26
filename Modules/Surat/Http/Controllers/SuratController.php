@@ -338,6 +338,7 @@ class SuratController extends Controller
             $node = [
                 'key' => $item->tujuan_disposisi,
                 'name' => $item->tujuan_disposisi,
+                'status_disposisi' => $item->status,
                 'status' => 'king',
                 'parent' => $jabatan->jabatan
             ];
@@ -350,7 +351,7 @@ class SuratController extends Controller
             // Link dari jabatan ke tujuan disposisi
             $links[] = [
                 'from' => $jabatan->jabatan,
-                'to' => $item->tujuan_disposisi
+                'to' => $item->tujuan_disposisi,
             ];
 
             // Kondisi untuk panah kembali ke Direktur

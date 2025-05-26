@@ -5,7 +5,8 @@
 @stop
 @section('content')
     <script src="https://unpkg.com/gojs@3.0.8/release/go.js"></script>
-    <link href="https://fonts.googleapis.com/css?family=Poppins:regular,medium,bold&amp;subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:regular,medium,bold&amp;subset=latin,latin-ext"
+        rel="stylesheet" type="text/css">
     <style>
         #hidden {
             font: 500 18px Poppins;
@@ -15,6 +16,7 @@
     <script id="code">
         const nameProperty = "name";
         const statusProperty = "status";
+        const statusDisposisi = "status_disposisi";
         const countProperty = "count";
 
         const theme = {
@@ -122,6 +124,22 @@
             })
             .bind("text", nameProperty)
 
+        const personStatusDisposisi = () =>
+            new go.TextBlock({
+                stroke: theme.colors.personText,
+                font: theme.fonts.nameFont,
+                desiredSize: new go.Size(230, 50),
+                overflow: go.TextOverflow.Ellipsis,
+                textAlign: "center",
+                verticalAlignment: go.Spot.Center,
+                toolTip: go.GraphObject.build("ToolTip")
+                    .add(new go.TextBlock({
+                        margin: 4
+                    }).bind("text", statusDisposisi)),
+                alignmentFocus: go.Spot.Top,
+                alignment: new go.Spot(0.5, 0, 0, 25)
+            })
+            .bind("text", statusDisposisi)  
 
         const createNodeTemplate = () =>
             new go.Node("Spot", {
@@ -133,6 +151,7 @@
             .add(new go.Panel("Spot")
                 .add(personMainShape())
                 .add(personNameTextBlock())
+                .add(personStatusDisposisi())
             )
             .add(personCounter())
 
@@ -172,11 +191,13 @@
 
         // Fungsi untuk inisialisasi diagram
         const initDiagram = (divId, nodeDataArray, linkDataArray) => {
-            if (!Array.isArray(nodeDataArray) || nodeDataArray.some(item => typeof item !== 'object' || item === null)) {
+            if (!Array.isArray(nodeDataArray) || nodeDataArray.some(item => typeof item !== 'object' || item ===
+                    null)) {
                 console.error("Invalid data format for nodeDataArray");
                 return;
             }
-            if (!Array.isArray(linkDataArray) || linkDataArray.some(item => typeof item !== 'object' || item === null)) {
+            if (!Array.isArray(linkDataArray) || linkDataArray.some(item => typeof item !== 'object' || item ===
+                    null)) {
                 console.error("Invalid data format for linkDataArray");
                 return;
             }
@@ -225,9 +246,13 @@
             }
         });
     </script>
-    <a href="{{ url( 'surat/surat-masuk' ) }}" title="Kembali"><button class="btn btn-warning btn-sm mb-3"><i class="fa fa-arrow-left" aria-hidden="true"></i> Kembali</button></a>
+    <a href="{{ url('surat/surat-masuk') }}" title="Kembali"><button class="btn btn-warning btn-sm mb-3"><i
+                class="fa fa-arrow-left" aria-hidden="true"></i> Kembali</button></a>
     <div id="sample">
-        <div id="myDiagramDiv" style="background-color: white; width: 100%; height: 550px; position: relative; -webkit-tap-highlight-color: rgba(255, 255, 255, 0); cursor: auto;"><canvas tabindex="0" width="1545" height="672" style="position: absolute; top: 0px; left: 0px; z-index: 2; user-select: none; touch-action: none; width: 1236px; height: 538px; cursor: auto;"></canvas>
+        <div id="myDiagramDiv"
+            style="background-color: white; width: 100%; height: 550px; position: relative; -webkit-tap-highlight-color: rgba(255, 255, 255, 0); cursor: auto;">
+            <canvas tabindex="0" width="1545" height="672"
+                style="position: absolute; top: 0px; left: 0px; z-index: 2; user-select: none; touch-action: none; width: 1236px; height: 538px; cursor: auto;"></canvas>
             <div style="position: absolute; overflow: auto; width: 1246px; height: 548px; z-index: 1;">
                 <div style="position: absolute; width: 3786.6px; height: 771.6px;"></div>
             </div>
