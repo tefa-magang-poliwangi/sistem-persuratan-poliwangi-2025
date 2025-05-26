@@ -204,7 +204,15 @@ class SuratController extends Controller
     public function selesai($id)
     {
         $arsip = SuratMasuk::findOrFail($id);
+        $suratDisposisis = SuratDisposisi::where('surat_masuk_id', $id)->get();
+
+        // update status surat masuk
         $arsip->update(['status' => 7]);
+
+        // update status milik data surat disposisi (agar menjadi 1) yang berkaitan dengan surat masuk
+        foreach ($suratDisposisis as $disposisi) {
+            $disposisi->update(['status' => 1]);
+        }
 
         return back()->with('sukses', 'Berhasil Menyelesaikan Surat');
     }
@@ -255,9 +263,12 @@ class SuratController extends Controller
         SuratDisposisi::create($disposisi);
         return redirect('/surat/surat-masuk')->with('sukses', 'Berhasil Tambah Disposisi Surat');
     }
+
+    // acc surat untuk pegawai / unit
     public function acc(Request $request, $id)
     {
         $surat = SuratMasuk::findOrFail($id);
+        $suratDisposisis = SuratDisposisi::where('surat_masuk_id', $id)->get();
 
         $rules = ['foto' => config('custom.validasi_file_rules')]; // langsung dari .env
         $messages = config('custom.validasi_file_messages'); // dari config/custom.php
@@ -269,6 +280,11 @@ class SuratController extends Controller
         ];
 
         $surat->update($data);
+
+        // update status milik data surat disposisi (agar menjadi 1) yang berkaitan dengan surat masuk
+        foreach ($suratDisposisis as $disposisi) {
+            $disposisi->update(['status' => 1]);
+        }
 
         if ($request->hasFile('foto')) {
             $file = $request->file('foto');
@@ -296,7 +312,7 @@ class SuratController extends Controller
     }
     public function diagram($id)
     {
-        $surat_masuk = SuratMasuk::findOrFail($id);
+        // $surat_masuk = SuratMasuk::findOrFail($id);
         $disposisi = SuratDisposisi::where('surat_masuk_id', $id)->get();
 
         $nodes = [];

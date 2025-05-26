@@ -29,9 +29,9 @@
                                             value="{{ $item->jabatan }}"{{ $item->jabatan == $surat->tujuan_disposisi ? 'selected' : '' }}>
                                             {{ $item->jabatan }}</option>
                                     @endforeach
-                                    <option value="Sekretaris"
-                                        {{ 'Sekretaris' == $surat->tujuan_disposisi ? 'selected' : '' }}>Kembali Ke
-                                        Sekretaris</option>
+                                    <option value="Sekdir" {{ 'Sekdir' == $surat->tujuan_disposisi ? 'selected' : '' }}>
+                                        Kembali Ke
+                                        Sekdir</option>
                                 </select>
                             </div>
                             <div class="col-md-6">

@@ -46,7 +46,7 @@
                                             @elseif ($item->status == 3)
                                                 <span class="badge bg-success font-size-11">Terkirim Ke Wadir</span>
                                             @elseif ($item->status == 6)
-                                                <span class="badge bg-primary font-size-11">Kembali ke Sekretaris</span>
+                                                <span class="badge bg-primary font-size-11">Kembali ke Sekdir</span>
                                             @endif
                                         </td>
                                         <td class="text-center">

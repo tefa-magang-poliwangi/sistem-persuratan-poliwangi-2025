@@ -104,7 +104,7 @@
                                 <label for="disposisi">Tujuan Disposisi <span class="text-danger fw-bold">*</span></label>
                                 <select name="disposisi[]" class="form-control select2" id="disposisi" multiple="multiple"
                                     required>
-                                    <option value="Sekretaris">Kembali Ke Sekretaris</option>
+                                    <option value="Sekdir">Kembali Ke Sekdir</option>
                                     <option value="Direktur">Kembali Ke Direktur</option>
                                     @foreach ($user as $item)
                                         <option value="{{ $item->jabatan }}">{{ $item->jabatan }}</option>

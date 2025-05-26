@@ -57,7 +57,7 @@
                                             @elseif ($item->status == 4)
                                                 <span class="badge bg-success font-size-11">Dikirim ke Pegawai</span>
                                             @elseif ($item->status == 6)
-                                                <span class="badge bg-secondary font-size-11">Kembali ke Sekretaris</span>
+                                                <span class="badge bg-secondary font-size-11">Kembali ke Sekdir</span>
                                             @elseif ($item->status == 7)
                                                 <span class="badge bg-dark font-size-11">Selesai</span>
                                             @else
@@ -70,12 +70,16 @@
                                                     data-toggle="modal" data-target="#hapus"
                                                     onclick="hapus({{ $item->id }})"><i
                                                         class="fas fa-trash"></i></button>
-                                                <a href="{{ url('surat/surat-masuk/' . $item->id) }}"><button type="button"
-                                                        class="btn btn-primary btn-sm mt-1"><i
-                                                            class="fas fa-eye"></i></button></a <button type="button"
-                                                    class="btn btn-success btn-sm mt-1" data-toggle="modal"
-                                                    data-target="#selesai" onclick="selesai({{ $item->id }})"><i
-                                                    class="fas fa-check" title="Setujui?"></i></button>
+                                                <a href="{{ url('surat/surat-masuk/' . $item->id) }}">
+                                                    <button type="button" class="btn btn-primary btn-sm mt-1"><i
+                                                            class="fas fa-eye"></i>
+                                                    </button>
+                                                </a>
+                                                <button type="button" class="btn btn-success btn-sm mt-1"
+                                                    data-toggle="modal" data-target="#selesai"
+                                                    onclick="selesai({{ $item->id }})">
+                                                    <i class="fas fa-check" title="Setujui?"></i>
+                                                </button>
                                             @elseif ($item->status == 7)
                                                 <button type="button" class="btn btn-sm mt-1 btn-danger"
                                                     data-toggle="modal" data-target="#hapus"
@@ -120,7 +124,8 @@
             </div>
         </div>
     </div>
-    {{-- Modal --}}
+
+    {{-- Modal Arsip --}}
     <div class="modal fade" id="arsip" dtabindex="-1" aria-labelledby="modalIcon" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -145,6 +150,8 @@
             </div>
         </div>
     </div>
+
+    {{-- Modal Selesaikan Surat --}}
     <div class="modal fade" id="selesai" dtabindex="-1" aria-labelledby="modalIcon" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -169,6 +176,8 @@
             </div>
         </div>
     </div>
+
+    {{-- Modal Hapus Surat --}}
     <div class="modal fade" id="hapus" dtabindex="-1" aria-labelledby="modalIcon" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -193,6 +202,7 @@
             </div>
         </div>
     </div>
+
     @push('js')
         <script>
             let table = new DataTable('#tabel_surat');

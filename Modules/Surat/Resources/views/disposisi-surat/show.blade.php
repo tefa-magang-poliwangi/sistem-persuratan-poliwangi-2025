@@ -83,7 +83,7 @@
                                     @foreach ($user as $item)
                                         <option value="{{ $item->jabatan }}">{{ $item->jabatan }}</option>
                                     @endforeach
-                                    <option value="Sekretaris">Kembali ke Sekretaris</option>
+                                    <option value="Sekdir">Kembali ke Sekdir</option>
                                 </select>
                             </div>
                             <div class="col-md-6" hidden>

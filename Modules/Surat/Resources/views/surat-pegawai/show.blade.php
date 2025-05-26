@@ -10,7 +10,8 @@
             <div class="card">
                 <div class="card-header">Surat dari {{ $surat->pengirim }}</div>
                 <div class="card-body">
-                    <a href="{{ url('/surat/surat-masuk') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Kembali</button></a>
+                    <a href="{{ url('/surat/surat-masuk') }}" title="Back"><button class="btn btn-warning btn-sm"><i
+                                class="fa fa-arrow-left" aria-hidden="true"></i> Kembali</button></a>
                     <br />
                     <br />
                     <div class="table-responsive">
@@ -39,16 +40,18 @@
                                 <tr>
                                     <th>Surat</th>
                                     <td>
-                                        <a href="{{ asset('storage/assets/img/surat/' . $surat->file) }}" title="Lihat File" target="_blank">
+                                        <a href="{{ asset('storage/assets/img/surat/' . $surat->file) }}" title="Lihat File"
+                                            target="_blank">
                                             <button class="btn btn-primary btn-sm">
                                                 <i class="fas fa-eye" aria-hidden="true"></i> Lihat File
                                             </button>
                                         </a>
-                                        <a href="{{ asset('storage/assets/img/surat/' . $surat->file) }}" title="Download file" download="Surat dari {{ $surat->pengirim }}">
+                                        <a href="{{ asset('storage/assets/img/surat/' . $surat->file) }}"
+                                            title="Download file" download="Surat dari {{ $surat->pengirim }}">
                                             <button class="btn btn-warning btn-sm">
                                                 <i class="fas fa-cloud-download-alt" aria-hidden="true"></i> Download
                                             </button>
-                                        </a> 
+                                        </a>
                                     </td>
                                     <th>Isi Disposisi</th>
                                     <td colspan="3">
@@ -73,19 +76,19 @@
                             <tbody>
                                 <tr>
                                     <th>Dari</th>
-                                    <td>{{$user_disposisi->jabatan}}</td>
+                                    <td>{{ $user_disposisi->jabatan }}</td>
                                 </tr>
                                 <tr>
                                     <th>Disposisi Singkat</th>
-                                    <td>{{$disposisi->disposisi_singkat}}</td>
+                                    <td>{{ $disposisi->disposisi_singkat }}</td>
                                 </tr>
                                 <tr>
                                     <th>Disposisi Narasi</th>
-                                    <td>{{$disposisi->disposisi_narasi}}</td>
+                                    <td>{{ $item->disposisi_narasi ?? '(tidak ditambahkan)' }}</td>
                                 </tr>
                                 <tr>
                                     <th>Tujuan Disposisi</th>
-                                    <td>{{$disposisi->tujuan_disposisi}}</td>
+                                    <td>{{ $disposisi->tujuan_disposisi }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -99,7 +102,8 @@
             <div class="card">
                 <div class="card-header">Surat {{ $surat->pengirim }}</div>
                 <div class="card-body">
-                    <form action="{{ url('surat/surat-masuk/disposisi/' . $surat->id) }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ url('surat/surat-masuk/disposisi/' . $surat->id) }}" method="post"
+                        enctype="multipart/form-data">
                         @csrf
                         @method('patch')
                         <div class="row mb-3">
@@ -107,25 +111,26 @@
                                 <label for="">Tujuan Disposisi</label>
                                 <select name="disposisi[]" class="form-control select2" id="" multiple="multiple">
                                     @foreach ($user as $item)
-                                    <option value="{{ $item->jabatan }}">{{ $item->jabatan }}</option>
+                                        <option value="{{ $item->jabatan }}">{{ $item->jabatan }}</option>
                                     @endforeach
-                                    <option value="Sekretaris">Kembali Ke Sekretaris</option>
+                                    <option value="Sekdir">Kembali Ke Sekdir</option>
                                 </select>
                             </div>
                             <div class="col-md-6" hidden>
                                 <label for="example-text-input">Tujuan Disposisi</label>
                                 <input name="tujuan_disposisi[]" class="form-control select2" multiple="multiple">
-                              
+
                             </div>
                             <div class="col-md-6">
                                 <label for="example-text-input">Waktu</label>
-                                <input class="form-control" type="datetime-local" name="waktu" value="{{ (new DateTime('now', new DateTimeZone('Asia/Jakarta')))->format('Y-m-d\TH:i') }}">
+                                <input class="form-control" type="datetime-local" name="waktu"
+                                    value="{{ (new DateTime('now', new DateTimeZone('Asia/Jakarta')))->format('Y-m-d\TH:i') }}">
                             </div>
                         </div>
                         <div class="row mb-3" hidden>
                             <div class="col-md-6">
                                 <label for="example-text-input" class="col-form-label">Induk</label>
-                                <input class="form-control" type="text" name="induk" value="{{$surat->id}}">
+                                <input class="form-control" type="text" name="induk" value="{{ $surat->id }}">
                             </div>
                         </div>
                         <div class="mb-3">

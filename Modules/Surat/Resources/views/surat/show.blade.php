@@ -10,8 +10,11 @@
             <div class="card">
                 <div class="card-header">Surat {{ $surat->pengirim }}</div>
                 <div class="card-body">
-                    <a href="{{ url('/surat/surat-masuk') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Kembali</button></a>
-                    <a href="{{ url('/surat/surat-masuk/' . $surat->id . '/edit') }}" title="Edit JenisLuaran"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Ubah</button></a>
+                    <a href="{{ url('/surat/surat-masuk') }}" title="Back"><button class="btn btn-warning btn-sm"><i
+                                class="fa fa-arrow-left" aria-hidden="true"></i> Kembali</button></a>
+                    <a href="{{ url('/surat/surat-masuk/' . $surat->id . '/edit') }}" title="Edit JenisLuaran"><button
+                            class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            Ubah</button></a>
                     <br />
                     <br />
 
@@ -48,7 +51,8 @@
                                 </tr>
                                 <tr>
                                     <th>Files</th>
-                                    <td><iframe src="{{ asset('storage/assets/img/surat') . '/' . $surat->file }}" width="100%" height="600"></iframe></td>
+                                    <td><iframe src="{{ asset('storage/assets/img/surat') . '/' . $surat->file }}"
+                                            width="100%" height="600"></iframe></td>
                                 </tr>
                         </table>
                     </div>
@@ -76,7 +80,7 @@
                                         </tr>
                                         <tr>
                                             <th>Disposisi Narasi</th>
-                                            <td>{{ $item->disposisi_narasi }}</td>
+                                            <td>{{ $item->disposisi_narasi ?? '(tidak ditambahkan)' }}</td>
                                         </tr>
                                         <tr>
                                             <th>Tujuan Disposisi</th>

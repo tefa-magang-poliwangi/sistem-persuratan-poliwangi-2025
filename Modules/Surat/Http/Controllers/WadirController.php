@@ -222,6 +222,7 @@ class WadirController extends Controller
     public function acc(Request $request, $id)
     {
         $surat = SuratMasuk::findOrFail($id);
+        $suratDisposisis = SuratDisposisi::where('surat_masuk_id', $id)->get();
 
         // Validasi file
         $rules = ['foto' => config('custom.validasi_file_rules')]; // langsung dari .env
@@ -234,6 +235,11 @@ class WadirController extends Controller
         ];
 
         $surat->update($data);
+
+        // update status milik data surat disposisi (agar menjadi 1) yang berkaitan dengan surat masuk
+        foreach ($suratDisposisis as $disposisi) {
+            $disposisi->update(['status' => 1]);
+        }
 
         if ($request->hasFile('foto')) {
             $file = $request->file('foto');

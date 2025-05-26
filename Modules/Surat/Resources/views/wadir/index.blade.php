@@ -52,7 +52,7 @@
                                                     <span class="badge bg-success font-size-11">Dikirim Ke Pegawai</span>
                                                 @elseif ($item->status == 6)
                                                     <span class="badge bg-secondary font-size-11">Kembali ke
-                                                        Sekretaris</span>
+                                                        Sekdir</span>
                                                 @elseif ($item->status == 7)
                                                     <span class="badge bg-dark font-size-11">Selesai</span>
                                                 @else

@@ -24,9 +24,9 @@
                                 </label>
                                 <select name="tujuan_disposisi[]" id="tujuan_disposisi" class="form-control select2"
                                     multiple="multiple" required>
-                                    <option value="Sekretaris"
-                                        {{ 'Sekretaris' == $surat->tujuan_disposisi ? 'selected' : '' }}>Kembali ke
-                                        Sekretaris</option>
+                                    <option value="Sekdir"
+                                        {{ 'Sekdir' == $surat->tujuan_disposisi ? 'selected' : '' }}>Kembali ke
+                                        Sekdir</option>
                                     @foreach ($user as $item)
                                         <option
                                             value="{{ $item->jabatan }}"{{ in_array($item->jabatan, explode(',', $surat->tujuan_disposisi)) ? 'selected' : '' }}>
