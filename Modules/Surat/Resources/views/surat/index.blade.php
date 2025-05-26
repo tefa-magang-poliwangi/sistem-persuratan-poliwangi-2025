@@ -72,15 +72,10 @@
                                                         class="fas fa-trash"></i></button>
                                                 <a href="{{ url('surat/surat-masuk/' . $item->id) }}"><button type="button"
                                                         class="btn btn-primary btn-sm mt-1"><i
-                                                            class="fas fa-eye"></i></button></a>
-                                                <button type="button" class="btn btn-secondary btn-sm mt-1"
-                                                    data-toggle="modal" data-target="#arsip"
-                                                    onclick="arsip({{ $item->id }})"><i class="fas fa-file-archive"
-                                                        title="Arsip?"></i></button>
-                                                <button type="button" class="btn btn-success btn-sm mt-1"
-                                                    data-toggle="modal" data-target="#selesai"
-                                                    onclick="selesai({{ $item->id }})"><i class="fas fa-check"
-                                                        title="Setujui?"></i></button>
+                                                            class="fas fa-eye"></i></button></a <button type="button"
+                                                    class="btn btn-success btn-sm mt-1" data-toggle="modal"
+                                                    data-target="#selesai" onclick="selesai({{ $item->id }})"><i
+                                                    class="fas fa-check" title="Setujui?"></i></button>
                                             @elseif ($item->status == 7)
                                                 <button type="button" class="btn btn-sm mt-1 btn-danger"
                                                     data-toggle="modal" data-target="#hapus"
@@ -96,6 +91,10 @@
                                                     title="Lihat File" target="_blank"><button
                                                         class="btn btn-dark btn-sm mt-1"><i class="fas fa-clipboard"
                                                             aria-hidden="true"></i></button></a>
+                                                <button type="button" class="btn btn-secondary btn-sm mt-1"
+                                                    data-toggle="modal" data-target="#arsip"
+                                                    onclick="arsip({{ $item->id }})"><i class="fas fa-file-archive"
+                                                        title="Arsip?"></i></button>
                                             @else
                                                 <a href="{{ url('surat/surat-masuk/' . $item->id . '/edit') }}"><button
                                                         type="button" class="btn btn-warning btn-sm mt-1"><i
