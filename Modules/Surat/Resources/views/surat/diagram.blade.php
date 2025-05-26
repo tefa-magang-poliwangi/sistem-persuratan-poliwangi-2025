@@ -98,7 +98,8 @@
         const personMainShape = () =>
             new go.Shape({
                 figure: "RoundedRectangle",
-                desiredSize: new go.Size(350, 100),
+                strokeWidth: 2,
+                desiredSize: new go.Size(350, 170),
                 fill: theme.colors.personNodeBackground,
                 portId: "",
                 parameter1: CORNER_ROUNDNESS,
@@ -128,7 +129,7 @@
             new go.TextBlock({
                 stroke: theme.colors.personText,
                 font: theme.fonts.nameFont,
-                desiredSize: new go.Size(230, 50),
+                desiredSize: new go.Size(230, 80),
                 overflow: go.TextOverflow.Ellipsis,
                 textAlign: "center",
                 verticalAlignment: go.Spot.Center,
@@ -139,7 +140,7 @@
                 alignmentFocus: go.Spot.Top,
                 alignment: new go.Spot(0.5, 0, 0, 25)
             })
-            .bind("text", statusDisposisi)  
+            .bind("text", statusDisposisi, val => val === 1 ? "Selesai" : "Belum Selesai")
 
         const createNodeTemplate = () =>
             new go.Node("Spot", {
@@ -148,12 +149,16 @@
                 mouseLeave: onMouseLeavePart,
                 selectionChanged: onSelectionChange
             })
-            .add(new go.Panel("Spot")
+            .add(
+                new go.Panel("Spot")
                 .add(personMainShape())
-                .add(personNameTextBlock())
-                .add(personStatusDisposisi())
+                .add(
+                    new go.Panel("Vertical") // << di sini vertikalnya
+                    .add(personNameTextBlock())
+                    .add(personStatusDisposisi())
+                )
             )
-            .add(personCounter())
+            .add(personCounter());
 
         const createLinkTemplate = () =>
             new go.Link({

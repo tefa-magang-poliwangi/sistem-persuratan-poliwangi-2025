@@ -23,7 +23,6 @@ class SuratController extends Controller
      */
     public function index()
     {
-
         if (auth()->user()->getRolenames()[0] == "pegawai") {
             $jabatan = DB::table('users')
                 ->join('pegawais', 'users.username', '=', 'pegawais.username')
@@ -285,14 +284,6 @@ class SuratController extends Controller
         if (!$jabatan) {
             return back()->with('error', 'Jabatan tidak ditemukan.');
         }
-        // Ambil surat disposisi yang tujuan_disposisi-nya mengandung jabatan user
-        $suratDisposisis = DB::table('surat_disposisis')
-            ->where('surat_masuk_id', $id)
-            ->whereRaw('FIND_IN_SET(?, tujuan_disposisi)', [$jabatan->jabatan])
-            ->get();
-
-        // Tampilkan untuk debug
-        // dd($suratDisposisis);
 
         $rules = ['foto' => config('custom.validasi_file_rules')]; // langsung dari .env
         $messages = config('custom.validasi_file_messages'); // dari config/custom.php

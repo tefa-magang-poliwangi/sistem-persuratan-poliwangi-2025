@@ -44,12 +44,10 @@
                                                 {{ $item->sifat }}
                                             </td>
                                             <td class="text-center">
-                                                @if ($item->status == 4)
+                                                @if ($item->status_disposisi === 0)
                                                     <span class="badge bg-warning font-size-11">Pending</span>
-                                                @elseif ($item->status == 7)
+                                                @elseif ($item->status_disposisi === 1)
                                                     <span class="badge bg-success font-size-11">Selesai</span>
-                                                @else
-                                                    <span class="badge bg-secondary font-size-11">Arsip</span>
                                                 @endif
                                             </td>
                                             <td class="text-center">
