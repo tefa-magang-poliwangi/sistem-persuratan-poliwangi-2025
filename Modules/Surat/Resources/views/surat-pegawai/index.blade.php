@@ -63,10 +63,13 @@
                                                                 class="btn btn-primary btn-sm"><i class="fas fa-eye"
                                                                     aria-hidden="true"></i></button></a>
                                                     @endif
-                                                    <button type="button" class="btn btn-success btn-sm"
-                                                        data-toggle="modal" data-target="#acc"
-                                                        onclick="acc({{ $item->id }})"><i
-                                                            class="fas fa-check"></i></button>
+                                                    @if ($item->status_disposisi == 0)
+                                                        <button type="button" class="btn btn-success btn-sm"
+                                                            data-toggle="modal" data-target="#acc"
+                                                            onclick="acc({{ $item->id }})">
+                                                            <i class="fas fa-check"></i>
+                                                        </button>
+                                                    @endif
                                                     {{-- <a href="{{ url('surat/surat-masuk/lembar-disposisi/' . $item->id) }}" title="Lihat File" target="_blank"><button class="btn btn-primary btn-sm"><i class="fas fa-eye" aria-hidden="true"></i></button></a> --}}
                                                 @elseif ($item->status == 7)
                                                     <a href="{{ url('surat/surat-masuk/detail/' . $item->id) }}"><button
