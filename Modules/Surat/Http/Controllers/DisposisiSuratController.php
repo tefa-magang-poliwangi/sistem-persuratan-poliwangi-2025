@@ -129,6 +129,7 @@ class DisposisiSuratController extends Controller
             'tujuan_disposisi' => $request->disposisi,
             'induk' => $request->induk,
             'waktu' => $request->waktu,
+            'status' => 1,
             'disposisi_singkat' => $request->disposisi_singkat,
             'disposisi_narasi' => $request->disposisi_narasi,
         ];
