@@ -153,38 +153,46 @@ class WadirController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id) 
     {
         $surat_masuk = SuratMasuk::findOrFail($id);
-        if ($request->disposisi == ['Sekdir']) {
-            $data = [
-                'disposisi' => implode(',', $request->disposisi),
-                'status' => 6,
-            ];
-        } elseif ($request->disposisi == ['Direktur']) {
-            $data = [
-                'disposisi' => implode(',', $request->disposisi),
-                'status' => 2,
-            ];
+
+        // Filter tujuan disposisi agar tidak ada null atau kosong
+        $tujuan_disposisi = array_filter($request->tujuan_disposisi, function($value) {
+            return !is_null($value) && $value !== '';
+        });
+        $tujuan_disposisi = array_values($tujuan_disposisi); // reset index
+
+        $jumlah_tujuan = count($tujuan_disposisi);
+
+        // Contoh logika status sederhana (bisa disesuaikan)
+        if ($jumlah_tujuan === 1 && $tujuan_disposisi[0] === 'Sekdir') {
+            $data = ['disposisi' => $jumlah_tujuan, 'status' => 6];
+        } elseif ($jumlah_tujuan === 1 && $tujuan_disposisi[0] === 'Direktur') {
+            $data = ['disposisi' => $jumlah_tujuan, 'status' => 2];
         } else {
-            $data = [
-                'disposisi' => implode(',', $request->disposisi),
-                'status' => 4,
-            ];
+            $data = ['disposisi' => $jumlah_tujuan, 'status' => 4];
         }
+
         $surat_masuk->update($data);
-        $disposisi = [
-            'surat_masuk_id' => $id,
-            'user_id' => auth()->user()->id,
-            'tujuan_disposisi' => implode(',', $request->disposisi),
-            'induk' => $request->induk,
-            'waktu' => $request->waktu,
-            'disposisi_singkat' => $request->disposisi_singkat,
-            'disposisi_narasi' => $request->disposisi_narasi,
-        ];
-        SuratDisposisi::create($disposisi);
+
+
+        // Proses buat disposisi
+        foreach ($tujuan_disposisi as $tujuan) {
+            SuratDisposisi::create([
+                'surat_masuk_id' => $id,
+                'user_id' => auth()->user()->id,
+                'tujuan_disposisi' => $tujuan,
+                'induk' => $request->induk,
+                'waktu' => $request->waktu,
+                'disposisi_singkat' => $request->disposisi_singkat,
+                'disposisi_narasi' => $request->disposisi_narasi,
+            ]);
+        }
+
         return redirect('/surat/wadir')->with('sukses', 'Berhasil Tambah Disposisi Surat');
     }
+    
     public function updateDisposisi(Request $request, $id)
     {
         $disposisi_edit = SuratDisposisi::findOrFail($id);
