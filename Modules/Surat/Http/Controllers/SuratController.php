@@ -273,6 +273,7 @@ class SuratController extends Controller
     public function acc(Request $request, $id)
     {
         $surat = SuratMasuk::findOrFail($id);
+
         // Ambil jabatan user yang login
         $jabatan = DB::table('users')
             ->join('pegawais', 'users.username', '=', 'pegawais.username')
@@ -285,21 +286,23 @@ class SuratController extends Controller
             return back()->with('error', 'Jabatan tidak ditemukan.');
         }
 
-        $rules = ['foto' => config('custom.validasi_file_rules')]; // langsung dari .env
-        $messages = config('custom.validasi_file_messages'); // dari config/custom.php
+        // ✅ Gunakan ValidasiFileService
+        $validasi = new ValidasiFileService();
+        $validationData = $validasi->validateFile();
 
-        $request->validate($rules, $messages);
+        $request->validate(
+            $validationData['rules'],
+            $validationData['messages']
+        );
 
-        // update status milik data surat disposisi (agar menjadi 1) yang berkaitan dengan surat masuk
+        // Lanjut proses
         SuratDisposisi::where('surat_masuk_id', $id)
-        ->whereRaw('FIND_IN_SET(?, tujuan_disposisi)', [$jabatan->jabatan])
-        ->update(['status' => 1]);
+            ->whereRaw('FIND_IN_SET(?, tujuan_disposisi)', [$jabatan->jabatan])
+            ->update(['status' => 1]);
 
-        // ✅ Step 2: Cek apakah semua disposisi dengan surat_masuk_id sama sudah status = 1
         $jumlah_disposisi = SuratDisposisi::where('surat_masuk_id', $id)->count();
         $jumlah_selesai = SuratDisposisi::where('surat_masuk_id', $id)->where('status', 1)->count();
 
-        // ✅ Step 3: Kalau semua status = 1, update status surat
         if ($jumlah_disposisi > 0 && $jumlah_disposisi == $jumlah_selesai) {
             $surat->update(['status' => 7]);
         }
@@ -317,6 +320,7 @@ class SuratController extends Controller
             ];
             BuktiTugas::create($bukti);
         }
+
         return back();
     }
 
@@ -396,5 +400,30 @@ class SuratController extends Controller
             'diagramLinks' => $links,
             'id' => $id
         ]);
+    }
+}
+
+class ValidasiFileService
+{
+    private function getValidasiFileRules()
+    {
+        return env('VALIDASI_FILE_RULES');
+    }
+
+    private function getValidasiFileMessages()
+    {
+        return [
+            'foto.file' => 'File yang dikirimkan tidak valid.',
+            'foto.mimes' => 'Format file harus PDF.',
+            'foto.max' => 'Ukuran file maksimal 5MB.',
+        ];
+    }
+
+    public function validateFile()
+    {
+        return [
+            'rules' => ['foto' => $this->getValidasiFileRules()],
+            'messages' => $this->getValidasiFileMessages()
+        ];
     }
 }
