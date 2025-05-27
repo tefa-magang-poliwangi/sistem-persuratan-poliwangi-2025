@@ -28,6 +28,7 @@
                                     <th class="align-middle text-center">Perihal</th>
                                     <th class="align-middle text-center">Sifat</th>
                                     <th class="align-middle text-center">Status</th>
+                                    <th class="align-middle text-center">Progres</th>
                                     <th class="align-middle text-center">Aksi</th>
                                 </tr>
                             </thead>
@@ -63,6 +64,9 @@
                                             @else
                                                 <span class="badge bg-secondary font-size-11">Arsip</span>
                                             @endif
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge bg-info font-size-11">{{ $item->persentase_disposisi ?? 0 }}%</span>
                                         </td>
                                         <td class="text-center">
                                             @if ($item->status == 6)

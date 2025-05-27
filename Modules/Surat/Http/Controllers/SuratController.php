@@ -23,7 +23,10 @@ class SuratController extends Controller
      */
     public function index()
     {
-        if (auth()->user()->getRolenames()[0] == "pegawai") {
+        $userRole = auth()->user()->getRoleNames()[0];
+
+        if ($userRole == "pegawai") {
+            // Ambil jabatan user, beri fallback jika tidak ditemukan
             $jabatan = DB::table('users')
                 ->join('pegawais', 'users.username', '=', 'pegawais.username')
                 ->join('pejabats', 'pegawais.id', '=', 'pejabats.pegawai_id')
@@ -31,6 +34,11 @@ class SuratController extends Controller
                 ->select('pejabats.jabatan')
                 ->first();
 
+            if (!$jabatan) {
+                return redirect()->back()->with('error', 'Jabatan tidak ditemukan!');
+            }
+
+            // Query surat disposisi untuk pegawai
             $surat_pegawai = DB::table('surat_disposisis')
                 ->join('surat_masuks', 'surat_disposisis.surat_masuk_id', '=', 'surat_masuks.id')
                 ->whereRaw('FIND_IN_SET(?, surat_disposisis.tujuan_disposisi)', [$jabatan->jabatan])
@@ -38,14 +46,33 @@ class SuratController extends Controller
                 ->select(
                     'surat_disposisis.id as disposisi_id',
                     'surat_disposisis.status as status_disposisi',
+                    'surat_masuks.id as surat_masuk_id',
                     'surat_masuks.*'
                 )
                 ->orderBy('surat_masuks.created_at', 'DESC')
                 ->get();
 
             return view('surat::surat-pegawai.index', compact('surat_pegawai', 'jabatan'));
-        } elseif (auth()->user()->getRoleNames()[0] == "admin" || auth()->user()->getRoleNames()[0] == "sekdir") {
-            $surat = SuratMasuk::whereIn('status', ['1', '2', '3', '4', '6', '7'])->orderBy('created_at', 'DESC')->get();
+        } elseif ($userRole == "admin" || $userRole == "sekdir") {
+            $surat = SuratMasuk::whereIn('status', ['1', '2', '3', '4', '6', '7'])
+                ->orderBy('created_at', 'DESC')
+                ->get();
+
+                 foreach ($surat as $s) {
+                $totalDisposisi = DB::table('surat_disposisis')
+                    ->where('surat_masuk_id', $s->id)
+                    ->count();
+
+                $selesaiDisposisi = DB::table('surat_disposisis')
+                    ->where('surat_masuk_id', $s->id)
+                    ->where('status', 1)
+                    ->count();
+
+                $s->persentase_disposisi = ($totalDisposisi > 0)
+                    ? round(($selesaiDisposisi / $totalDisposisi) * 100)
+                    : 0;
+            }
+
             return view('surat::surat.index', compact('surat'));
         }
     }
