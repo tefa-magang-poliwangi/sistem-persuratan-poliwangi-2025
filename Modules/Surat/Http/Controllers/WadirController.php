@@ -174,6 +174,23 @@ class WadirController extends Controller
             $data = ['disposisi' => 'Surat Dikirim ke Pegawai', 'status' => 4];
         }
 
+        // Ambil jabatan user yang login
+        $jabatan = DB::table('users')
+            ->join('pegawais', 'users.username', '=', 'pegawais.username')
+            ->join('pejabats', 'pegawais.id', '=', 'pejabats.pegawai_id')
+            ->where('users.id', auth()->id())
+            ->select('pejabats.jabatan')
+            ->first();
+
+        if (!$jabatan) {
+            return back()->with('error', 'Jabatan tidak ditemukan.');
+        }
+
+        // update disposisi milik jabatan saat ini (wadir), agar statusnya menjadi 1
+        SuratDisposisi::where('surat_masuk_id', $id)
+            ->whereRaw('FIND_IN_SET(?, tujuan_disposisi)', [$jabatan->jabatan])
+            ->update(['status' => 1]);
+
         $surat_masuk->update($data);
 
         // Cek status disposisi: jika surat status 4, maka status disposisi = 0
@@ -231,7 +248,7 @@ class WadirController extends Controller
      * @return Renderable
      */
     public function acc(Request $request, $id)
-   {
+    {
         $surat = SuratMasuk::findOrFail($id);
 
         // Ambil jabatan user yang login
