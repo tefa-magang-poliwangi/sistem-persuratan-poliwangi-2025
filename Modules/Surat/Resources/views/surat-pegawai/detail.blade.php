@@ -10,7 +10,8 @@
                 <div class="card-header">Surat {{ $surat->pengirim }}</div>
                 <div class="card-body">
 
-                    <a href="{{ url('/surat/surat-masuk') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Kembali</button></a>
+                    <a href="{{ url('/surat/surat-masuk') }}" title="Back"><button class="btn btn-warning btn-sm"><i
+                                class="fa fa-arrow-left" aria-hidden="true"></i> Kembali</button></a>
                     <br />
                     <br />
 
@@ -47,24 +48,30 @@
                                 </tr>
                                 <tr>
                                     <th>Surat</th>
-                                    <td><a href="{{ asset('storage/assets/img/surat/' . $surat->file) }}" title="Download file" download="Surat dari {{ $surat->pengirim }}"><button class="btn btn-warning btn-sm"><i class="fas fa-cloud-download-alt" aria-hidden="true"></i> Download</button></a>
-                                        <a href="{{ asset('storage/assets/img/surat/' . $surat->file) }}" title="Lihat File" target="_blank"><button class="btn btn-primary btn-sm"><i class="fas fa-eye" aria-hidden="true"></i> Lihat File</button></a>
+                                    <td><a href="{{ asset('storage/assets/img/surat/' . $surat->file) }}"
+                                            title="Download file" download="Surat dari {{ $surat->pengirim }}"><button
+                                                class="btn btn-warning btn-sm"><i class="fas fa-cloud-download-alt"
+                                                    aria-hidden="true"></i> Download</button></a>
+                                        <a href="{{ asset('storage/assets/img/surat/' . $surat->file) }}"
+                                            title="Lihat File" target="_blank"><button class="btn btn-primary btn-sm"><i
+                                                    class="fas fa-eye" aria-hidden="true"></i> Lihat File</button></a>
                                     </td>
                                 </tr>
-                                    <tr>
-                                        <th>Status</th>
-                                        <td>Selesai</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Bukti</th>
-                                        <td>
-                                            @if($bukti && $bukti->foto)
-                                            <img src="{{ asset('storage/assets/img/bukti') . '/' . $bukti->foto }}" width="50" height="50" alt="">
-                                            @else
+                                <tr>
+                                    <th>Status</th>
+                                    <td>Selesai</td>
+                                </tr>
+                                <tr>
+                                    <th>Bukti</th>
+                                    <td>
+                                        @if ($bukti && $bukti->foto)
+                                            <iframe src="{{ asset('storage/assets/img/bukti') . '/' . $bukti->foto }}"
+                                                frameborder="0" width="500" height="500"></iframe>
+                                        @else
                                             -
-                                            @endif
-                                        </td>
-                                    </tr>
+                                        @endif
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
 

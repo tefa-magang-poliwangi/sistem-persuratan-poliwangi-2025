@@ -58,7 +58,7 @@ class SuratController extends Controller
                 ->orderBy('created_at', 'DESC')
                 ->get();
 
-                 foreach ($surat as $s) {
+            foreach ($surat as $s) {
                 $totalDisposisi = DB::table('surat_disposisis')
                     ->where('surat_masuk_id', $s->id)
                     ->count();
@@ -125,6 +125,7 @@ class SuratController extends Controller
         SuratMasuk::create($data);
         return redirect('/surat/surat-masuk')->with('success_message', 'Surat added!');
     }
+
     public function detail($id)
     {
         $surat = SuratMasuk::findOrFail($id);
